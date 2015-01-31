@@ -24,7 +24,10 @@
  app.use(cookieParser());
  app.use(express.static(path.join(__dirname, 'public')));
 
- app.use('/', routes);
+ app.get('/', function(req, res, next) {
+  res.render('index', { title: 'JustLunch.me' });
+});
+
  app.use('/users', users);
 
  // catch 404 and forward to error handler
