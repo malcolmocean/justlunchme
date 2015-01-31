@@ -13,7 +13,8 @@
     "hjs": "~0.0.6",
     "morgan": "~1.5.1",
     "serve-favicon": "~2.2.0",
-    "pg": "~4.2.0"
+    "pg": "~4.2.0",
+    "hogan-express": "~0.5.2"
   },
   "engines": {
     "node": "0.10.x"

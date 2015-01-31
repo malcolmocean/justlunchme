@@ -1,0 +1,18 @@
+{{#yield-title}} {{title}} {{/yield-title}}
+{{#yield-styles}}
+
+{{/yield-styles}}
+
+<h1>{{ title }}</h1>
+<p>Welcome to {{ title }}</p>
+<ul>
+{{#list}}
+  <li>{{name}} - {{program}}</li>
+{{/list}}
+</ul>
+
+{{#yield-scripts}}
+SCRIPTS
+{{/yield-scripts}}
+
+==========
