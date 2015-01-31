@@ -90,6 +90,15 @@ function loadOnConnected() {
 		console.log('user_friends' + response.friends.summary.total_count);
 		document.getElementById('status').innerHTML =
 		'Thanks for logging in, ' + response.name + '!';
+
+		for(i in jsonData){
+		    var key = i;
+		    var val = jsonData[i];
+		    console.log(key);
+	    }
+
+}
+
 	});
 }
 </script>
