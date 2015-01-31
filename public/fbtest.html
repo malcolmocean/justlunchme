@@ -86,9 +86,9 @@ function loadOnConnected() {
 	FB.api('/me?fields=id,name,email', get, function(response) {
 		console.log('Successful login for: ' + response.name);
 
-		for(i in jsonData){
+		for(i in response){
 		    var key = i;
-		    var val = jsonData[i];
+		    var val = response[i];
 		    console.log(key);
 	    }
 
