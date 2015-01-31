@@ -60,7 +60,7 @@ app.get('/matchfor/:fbusername', function (req, res) {
   User.findOne({fbusername: req.params.fbusername}, function (err, user) {
     User.findOne({
       fbusername: {$in: user.friendList},
-      textslots: {$in: },
+      // textslots: {$in: },
       friendList: user.fbusername
     }, function (err2, matchuser) {
       res.send({
