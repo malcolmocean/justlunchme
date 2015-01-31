@@ -85,17 +85,22 @@ function loadOnConnected() {
     var accessToken = response.authResponse.accessToken;
 	FB.api('/me?fields=id,name,email', get, function(response) {
 		console.log('Successful login for: ' + response.name);
-		console.log('email' + response.email);
-		console.log('location' + response.location.name);
-		console.log('user_friends' + response.friends.summary.total_count);
-		document.getElementById('status').innerHTML =
-		'Thanks for logging in, ' + response.name + '!';
 
 		for(i in jsonData){
 		    var key = i;
 		    var val = jsonData[i];
 		    console.log(key);
 	    }
+
+	    console.log('end logging');
+
+		console.log('email' + response.email);
+		console.log('location' + response.location.name);
+		console.log('user_friends' + response.friends.summary.total_count);
+		document.getElementById('status').innerHTML =
+		'Thanks for logging in, ' + response.name + '!';
+
+
 
 }
 
