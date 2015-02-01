@@ -14,13 +14,20 @@ var UserSchema = new mongoose.Schema({
     start: { type: String },
     end: { type: String }
   }],
-  textslots: [String],
+});
+
+UserSchema.virtual('bitslots').get(function () {
+  var result = {};
+  for (var i in this.slots) {
+    var slot = this.slots[i];
+    var ymd = slot.substr(0, 10);
+    var t2b = time2bit(slot.start, slot.end);
+  }
 });
 
 mongoose.model('User', UserSchema);
 
-
-function time2bit (startTime, endTime) {
+var time2bit = function (startTime, endTime) {
   var hour = 10;
   var minute = '00';
   var bitMask = 0;
@@ -44,4 +51,8 @@ function time2bit (startTime, endTime) {
       bitMask += 1<<i;
     }
   }
+  return bitMask;
 }
+module.exports = {
+  time2bit: time2bit
+};

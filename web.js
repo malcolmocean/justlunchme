@@ -18,7 +18,7 @@ var Mailgun = require("mailgun").Mailgun;
 require('./mailgunplus')(mg);
 var mg = new Mailgun(process.env.MAILGUN_KEY || process.env.JLM_MAILGUN_KEY);
 
-require('./models/user');
+var time2bit = require('./models/user').time2bit;
 var User = mongoose.model('User');
 
 // var db = require('./controllers/database.js');
@@ -47,6 +47,18 @@ app.get('/emailuser/:email', function (req, res) {
   });
 });
 
+var emailNonUser = function (email, inviterName) {
+  mg.checkAndSendHtml({
+    from: "JustLunch.Me <hi@justlunch.me>",
+    to: email,
+    subject: inviterName + " wants to go for lunch with you :)",
+    html: "Hi,",
+    headers: {},
+    callback: function(errm) {
+      res.send({err: errm, result: !errm && "success"});
+    }
+  });
+}
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -162,6 +174,12 @@ app.delete('/:email/lunchList/:otherEmail', function (req, res) {
     res.status(err ? 500 : 204).send();
   });
 });
+
+// app.get('/:email/delete', function (req, res) {
+//   User.find({ email: req.params.email }).remove(function (err) {
+//     res.send(err || "success");
+//   })
+// });
 
 app.post('/:email/add', function (req, res) {
   User.findOne({email: req.params.email}, function (err, user) {
@@ -398,8 +416,6 @@ function matchTimeSlots(slotA, slotB) {
 
   bitMask = bitA & bitB;
   bitString = bitMask.toString(2);
-
-
 
   return true;
 }
