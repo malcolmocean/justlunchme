@@ -1,12 +1,12 @@
 .adder-box {
-  border-right: 3px solid #cba;
+  border-right: 3px solid #B36000;
 }
 
 .label-search {
   margin: 5px 0;
   position: relative;
   left: 18px;
-  color: #FFAD90;
+  color: #733E00;
 }
 
 .form-group-search {
@@ -23,6 +23,7 @@
   max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
+  border-radius: 4px;
 }
 
 .friend-list li, .lunch-list li {
@@ -61,3 +62,7 @@
     max-width: 900px;
     margin: 0 auto;
   }
+
+.grey {
+  color: #aaa;
+}

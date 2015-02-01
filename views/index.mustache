@@ -13,7 +13,8 @@
         <ul class="friend-list" ng-class="{green: search.size === 1 || search.validemail}" ng-cloak>
           <li ng-repeat="friend in friends | searchfilter: search">
             <a ng-click="addByClick(friend)" href="">
-              {[{friend.name}]} &lt;{[{friend.email}]}&gt;
+            <span ng-show="friend.name">{[{friend.name}]} <span class="grey">({[{friend.email}]})</span></span>
+            <span ng-hide="friend.name">{[{friend.email}]}</span>
               <span class="badge" style="float:right" ng-show="search.size === 1">
                 <span class="glyphicon glyphicon-ok"></span>
               </span>

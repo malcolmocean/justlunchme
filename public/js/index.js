@@ -77,7 +77,8 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
     $scope.friends = [];
     angular.forEach(list, function(item, ix) {
       if (item.email && !/@fut.io/.test(item.email) && !lunchMap[item.email] &&
-        !/@(reply|groups).facebook.com/.test(item.email)) {
+        !/@(reply|groups).facebook.com/.test(item.email) &&
+        !/^support@/.test(item.email)) {
         item.searchString = item.name.toLowerCase() + ' ' + item.email.toLowerCase()
         item.ix = $scope.friends.length;
         $scope.friends.push(item);
@@ -103,48 +104,3 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
     }
   });
 });
-
-setTimeout(function () {
-  listCallback([
-    {
-      name: "Noah MacCallum",
-      email: "noahmacca@gmail.com",
-    },
-    {
-      name: "Adam Euerby",
-      email: "aeuerby@gmail.com",
-    },
-    {
-      name: "Alisa McClurg",
-      email: "amcclurg@outlook.com",
-    },
-    {
-      name: "Amanda Comeau",
-      email: "amanda.comeau9@gmail.com",
-    },
-    {
-      name: "Benjamin Carr",
-      email: "benjamin.f.carr@gmail.com",
-    },
-    {
-      name: "Charlotte Clarke",
-      email: "accredo.et.amo@gmail.com",
-    },
-    {
-      name: "Connor Turland",
-      email: "connorturland@gmail.com",
-    },
-    {
-      name: "Emma Dines",
-      email: "emmadines@gmail.com",
-    },
-    {
-      name: "Jean Robertson",
-      email: "jean@viewpointonchange.com",
-    },
-    {
-      name: "Tanya Williams",
-      email: "friendsofthefloor@gmail.com",
-    },
-  ]);
-}, 20);
