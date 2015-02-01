@@ -373,8 +373,51 @@ function onListening() {
 }
 
 function matchTimeSlots(slotA, slotB) {
+
+  if (!(slotA.startTime && slotB.startTime)) {
+    return false;
+  }
+  if (slotA.startTime.substring(0, 10) != slotB.startTime.substring(0, 10)) {
+    return false;
+  }
+
+  bitA = time2bit(slotA.startTime, slotA.endTime);
+  bitB = time2bit(slotB.startTime, slotB.endTime);
+
+  bitMask = bitA & bitB;
+  bitString = bitMask.toString(2);
+  
+
+
   return true;
 }
+
+
+function time2bit(startTime, endTime) {
+  var hour = 10;
+  var minute = '00';
+  var bitMask = 0;
+  var avail = false;
+  for (i=0; i<20; i++){
+    if (i%2 == 0) {
+      minute = '00';
+    } else {
+      minute = '30';
+    }
+    hour = hour +i;
+    time = hour + minute;
+
+    if (time == startTime) {
+      avail = true;
+    }
+    if (time == endTime) {
+      return bitMask;
+    }
+    if (avail) {
+      bitMask += 1<<i;
+    }
+  }
+} 
 
 
 
@@ -399,13 +442,15 @@ function matchingService(req, res) {
     async.each(users, function (user, next) {
       var okayEmails = [];
       for (var i=0;i<user.lunchList.length; i++) {
-        okayEmails.push(user.lunchList[i].email)
+        okayEmails.push(user.lunchList[i].email);
       }
+
       user.isMatched = false;
+      
 
       // User.find({email: {$in: okayEmails}, lunchList.email: user.email}, function (err, docs) {
       User.find({email: {$in: okayEmails}}, function (err, friends) {
-        //res.send('kalsdfjlkadsf' + user.friends);
+        res.send(user);
         user.friends = friends;
         var mutual_avail_friends = [];
         for (i=0; i<friends.length; i++) {
@@ -414,14 +459,17 @@ function matchingService(req, res) {
           }
         }
         user.mutual_avail_friends = mutual_avail_friends;
-
+        
         next();
       });
     }, function (err) {
+
       for (i=0; i<users.length; i++) {
         if (!users[i].isMatched) {
+
           for (j=0; j<users[i].mutual_avail_friends.length; j++) {
             friend = users[i].mutual_avail_friends[j];
+
             if (!friend.isMatched) {
               users[i].isMatched = true;
               users[i].partnerEmail = friend.email;
