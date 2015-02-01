@@ -201,6 +201,9 @@ app.get('/login', function(req, res){
   res.render('login', { user: req.user });
 });
 
+
+//app.get('/auth/google', passport.authenticate('google',{scope: 'https://www.googleapis.com/auth/plus.me https://www.google.com/m8/feeds https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'}));
+
 app.post('/auth/google/callback', passport.authenticate('google'), function(req, res) {
     // Return user back to client
     console.log('callback');
