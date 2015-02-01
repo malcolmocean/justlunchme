@@ -1,13 +1,37 @@
+.adder-box {
+  border-right: 3px solid #cba;
+
+}
+
+.form-group-search {
+  margin: 10px 10px 0;
+  padding-bottom: 10px;
+  overflow: auto;
+}
+
 .friend-list {
   list-style: none;
+  padding: 0;
+  margin: 0 27px 10px;
   border-bottom: 1px solid #ccd;
 }
 
 .friend-list li {
   padding: 6px 12px;
   border-top: 1px solid #ccd;
+  border-left: 1px solid #ccd;
+  border-right: 1px solid #ccd;
+  background: white;
+}
+
+.friend-list.green li {
+  background: #ddffe5;
 }
 
 .hasapp {
   background: #ddffe5;
+}
+
+.bolden {
+  font-weight: bold;
 }

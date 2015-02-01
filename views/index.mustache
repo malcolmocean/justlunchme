@@ -1,19 +1,37 @@
-<div class="container-fluid" ng-controller="UserPickerCtrl">
+<div class="container" ng-controller="UserPickerCtrl">
+  <h1>Who do you want to have lunch with?</h1>
   <div class="row">
-    <h1>{{ title }}</h1>
     <div class="col-md-6">
-      <ul class="friend-list" ng-cloak>
-        <li ng-repeat="friend in friends" ng-class="{hasapp: friend.hasApp}">
-        {[{friend.email}]}
-        <span class="badge" style="float:right" ng-show="friend.hasApp">
-          <span class="glyphicon glyphicon-ok"></span>
-        </span>
-        </li>
-      </ul>
+      <div class="adder-box">
+          <div class="form-group form-group-search">
+            <label class="col-md-2 control-label" for="name">Search</label>
+            <div class="col-md-10">
+              <input type="text" value="" ng-model="search.text" name="name" placeholder="name@email.com" class="form-control" ng-keypress="searchKeypress($event)">
+              {{! <p class="help-block">What shall we call you?</p> }}
+            </div>
+          </div>
+        <ul class="friend-list" ng-class="{green: search.size === 1 || search.validemail}" ng-cloak>
+          <li ng-repeat="friend in friends | listfilter: search" ng-click="addFriend($index)">
+          {[{friend.email}]}
+          <span class="badge" style="float:right" ng-show="search.size === 1">
+            <span class="glyphicon glyphicon-ok"></span>
+          </span>
+          </li>
+          <li ng-show="search.size == 0">
+          {[{search.text}]}
+          <span class="badge" style="float:right" ng-show="search.validemail">
+            <span class="glyphicon glyphicon-ok"></span>
+          </span>
+          </li>
+        </ul>
+        <p class="help-block" style="text-align: center;" ng-show="search.size == 0">
+          (enter full email and <span ng-class="{bolden: search.validemail}">press enter</span> to add by email)
+        </p>
+      </div>
     </div>
     <div class="col-md-6">
-      <ul class="friend-list" ng-cloak>
-        <li ng-repeat="friend in friends" ng-class="{hasapp: friend.hasApp}">
+      <ul class="lunch-list" ng-cloak>
+        <li ng-repeat="friend in lunchList">
         {[{friend.email}]}
         <span class="badge" style="float:right" ng-show="friend.hasApp">
           <span class="glyphicon glyphicon-ok"></span>
@@ -23,4 +41,4 @@
     </div>
   </div>
 </div>
-<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+{{! <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a> }}
