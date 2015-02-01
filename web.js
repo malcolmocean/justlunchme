@@ -223,10 +223,10 @@ app.post('/:email/add', function (req, res) {
             }
           }
           if (!hasCurrentUser) {
-            emailExistingUser(email, user.name);
+            // emailExistingUser(req.body.email, user.name);
           }
         } else {
-          emailNonUser(email, user.name);
+          // emailNonUser(req.body.email, user.name);
         }
         // user.lunchList = [];
         user.slots = [];
