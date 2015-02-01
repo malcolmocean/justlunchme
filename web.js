@@ -163,7 +163,8 @@ app.get('/', function(req, res, next) {
       {name: "noah", program: "nano"},
       {name: "will", program: "tron"},
       {name: "malcolm", program: "syde"}
-    ]
+    ],
+    user: req.user,
   });
 });
 
