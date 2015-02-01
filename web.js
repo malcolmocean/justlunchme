@@ -177,7 +177,7 @@ app.post('/:email/add', function (req, res) {
           // res.send("inviting by email");
         }
         // user.lunchList = [];
-        // user.slots = [];
+        user.slots = [];
         user.lunchList.push({
           name: req.body.name,
           email: req.body.email
@@ -380,7 +380,7 @@ function matchTimeSlots(slotA, slotB) {
 
 
 function matchingService(req, res) {
-    
+
   // Need a MongoDB query similar to the following SQL Query:
   // Todays_Candidates = SELECT (
   //   string ID,
@@ -390,12 +390,12 @@ function matchingService(req, res) {
   //   float Duration_Available,
   //   bool isMatched,
   //   string PartnerId )
-  // Where Avail_today == True 
+  // Where Avail_today == True
   // ORDER BY Duration_Available, #of Lunch List ASC;
   // The candidates with the least availability occur at the top of the list and will get matched first.
 
   User.find({}, function (err, users) {
-    
+
     async.each(users, function (user, next) {
       var okayEmails = [];
       for (var i=0;i<user.lunchList.length; i++) {

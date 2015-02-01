@@ -10,9 +10,9 @@ var UserSchema = new mongoose.Schema({
     email: {type: String, required: true}
   }],
   slots: [{
-    title: { type: String, required: true},
-    start: { type: String, required: true},
-    end: { type: String, required: true}
+    title: { type: String },
+    start: { type: String },
+    end: { type: String }
   }],
   textslots: [String],
 });
