@@ -103,10 +103,18 @@
               // call user information, for the given network
               hello( auth.network ).api('/me' , function (r) {
                 $.post('userJustAuthed', r, function (result) {
-                  // console.log("result", result);
+                  var events = [];
+                  // for (var i in result.slots) {
+
+                  //   events.push();
+                  // }
+                  initCalendar(result && result.slots);
+                  console.log("result.slots", result.slots);
                 });
                 authCallback(r); // TODO TEST THIS
                 user.email = r.email;
+                $("#friends-box").show();
+
                 console.log('this user with email', r);
               });
 
@@ -120,6 +128,62 @@
                 listCallback(r.data);
               });
             });
+
+            function initCalendar(events) {
+              $("#calendar-box").show();
+              $('#calendar').fullCalendar({
+                header: {
+                  left: 'prev,next today',
+                  center: '',
+                  right: '             '
+                },
+                // eventStartEditable: false,
+
+                // editable: false, // TODO actually support this
+                events: events || [],
+                defaultEventMinutes: 60,
+                defaultView: 'agendaWeek',
+                minTime: '10:00:00',
+                maxTime: '15:00:00',
+                height: 325,
+                allDaySlot: false,
+                //defaultDate: '2014-11-12',
+                selectable: true,
+                selectHelper: true,
+                select: function(start, end) {
+                  var title = 'Available';
+                  var eventData;
+                  if (title) {
+                    eventData = {
+                      title: title,
+                      start: start,
+                      end: end
+                    };
+                    $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                  }
+                  $('#calendar').fullCalendar('unselect');
+
+                  console.log("start.format().substr(0,19)", start.format().substr(0,19));
+                  $.post('/'+user.email+'/timeslot', {
+                    title: 'Available',
+                    start: start.format().substr(0,19),
+                    end: end.format().substr(0,19),
+                  });
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                  console.log("calEvent", calEvent);
+                  $('#calendar').fullCalendar('removeEvents', calEvent._id);
+                  $.post('/'+user.email+'/deletetimeslot', {
+                    start: calEvent.start.format().substr(0,19),
+                    end: calEvent.end.format().substr(0,19),
+                  });
+                },
+                timezone: 'local',
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+              });
+            }
+
           </script>
         {{! <div id="result"></div> }}
       </div>
@@ -162,7 +226,7 @@
   <!-- Intro Section -->
   <section id="intro" name="intro"></section>
   <!-- INTRO WRAP -->
-  <div id="bodywrap2">
+  <div id="" class="bodywrap2">
     <div class="container">
       <div class="row centered">
         <h1>Effortless Lunch Scheduling</h1>
@@ -190,7 +254,7 @@
   <!-- Friends Section -->
 
   <section id="friends" name="Friends"></section>
-  <div id="bodywrap1">
+  <div id="friends-box" class="bodywrap1" style="display:none;">
 
     <div class="container">
       <div class="row centered">
@@ -216,7 +280,7 @@
 
  <!-- Calendar Section -->
  <section id="times" name="Times"></section>
- <div id="bodywrap2">
+ <div id="calendar-box" class="bodywrap2" style="display:none;">
   <div class="container">
     <div class="row centered">
       <div class="col-lg-12">
@@ -239,7 +303,7 @@
 
 <!-- Thank you Section -->
 <section id="times" name="Times"></section>
-<div id="bodywrap1">
+<div id="" class="bodywrap1">
   <div class="container">
     <div class="row centered">
       <div class="col-lg-12">
@@ -276,55 +340,5 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.0.0/angular-strap.tpl.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script src="/js/index.js"></script>
-    <script>
-      $(function() {
-        $('#calendar').fullCalendar({
-          header: {
-            left: 'prev,next today',
-            center: '',
-            right: '             '
-          },
-          defaultView: 'agendaWeek',
-          minTime: '10:00:00',
-          maxTime: '15:00:00',
-          height: 325,
-          allDaySlot: false,
-          //defaultDate: '2014-11-12',
-          selectable: true,
-          selectHelper: true,
-          select: function(start, end) {
-            var title = 'Available';
-            var eventData;
-            if (title) {
-              eventData = {
-                title: title,
-                start: start,
-                end: end
-              };
-              $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-            }
-            $('#calendar').fullCalendar('unselect');
-
-            console.log("start.format().substr(0,19)", start.format().substr(0,19));
-            $.post('/'+user.email+'/timeslot', {
-              title: 'Available',
-              start: start.format().substr(0,19),
-              end: end.format().substr(0,19),
-            });
-          },
-          eventClick: function (calEvent, jsEvent, view) {
-            console.log("calEvent", calEvent);
-            $('#calendar').fullCalendar('removeEvents', calEvent._id);
-            $.post('/'+user.email+'/deletetimeslot', {
-              start: calEvent.start.format().substr(0,19),
-              end: calEvent.end.format().substr(0,19),
-            });
-          },
-          timezone: 'local',
-          editable: true,
-          eventLimit: true, // allow "more" link when too many events
-        });
-      });
-</script>
 </body>
 </html>

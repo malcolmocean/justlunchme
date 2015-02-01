@@ -124,7 +124,7 @@ app.post('/userJustAuthed', function (req, res) {
       existingUser.name = req.body.name || existingUser.name;
       existingUser.lastauthstamp = Date.now();
       existingUser.save(function (errs) {
-        res.send({result: "existing"});
+        res.send(existingUser);
       })
     } else {
       var user = new User({
@@ -193,7 +193,7 @@ app.post('/:email/add', function (req, res) {
 
 app.get('/:email/timeslots', function (req, res) {
   User.findOne({email: req.params.email}, function (err, user) {
-    res.send(slots);
+    res.send(user.slots);
   });
 });
 

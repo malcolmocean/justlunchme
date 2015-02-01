@@ -122,36 +122,36 @@ body {
 
 /* Bodywrap color1 */
 
-#bodywrap1 {
+.bodywrap1 {
     background-color: #f4a13e;
     padding-top: 40px;
 }
 
-#bodywrap1 h1 {
+.bodywrap1 h1 {
     font-size:36px;
 }
 
-#bodywrap1 h3 {
+.bodywrap1 h3 {
     font-size:28px;
 }
 
 
 /* Bodywrap color2 */
 
-#bodywrap2 {
+.bodywrap2 {
     background-color: #543e67;
     padding-top: 40px;
 }
 
-#bodywrap2 p {
+.bodywrap2 p {
     font-size:15px;
 }
 
-#bodywrap2 h1 {
+.bodywrap2 h1 {
     font-size:36px;
 }
 
-#bodywrap2 h3 {
+.bodywrap2 h3 {
     font-size:28px;
 }
 
