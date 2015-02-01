@@ -83,7 +83,7 @@ body {
     /*background-color: #f4a13e;*/
     padding-top: 60px;
     border-bottom: #bdc3c7 solid 5px;
-    height: 1000px;
+    height: 600px;
 }
 
 #headerwrap h1 {
@@ -120,14 +120,35 @@ body {
 
 #bodywrap1 {
     background-color: #f4a13e;
-    padding-top: 50px;
+    padding-top: 40px;
 }
+
+#bodywrap1 h1 {
+    font-size:36px;
+}
+
+#bodywrap1 h3 {
+    font-size:28px;
+}
+
 
 /* Bodywrap color2 */
 
 #bodywrap2 {
     background-color: #543e67;
-    padding-top: 50px;
+    padding-top: 40px;
+}
+
+#bodywrap2 p {
+    font-size:15px;
+}
+
+#bodywrap2 h1 {
+    font-size:36px;
+}
+
+#bodywrap2 h3 {
+    font-size:28px;
 }
 
 
@@ -188,6 +209,15 @@ body {
 .list-group.list-left-align {
     text-align: left;
 }
+
+.fc-view {
+    background:white;
+    color:black;
+}
+
+/*
+<div class="fc-view fc-agendaWeek-view fc-agenda-view"><table><thead><tr><td class="fc-widget-header"><div class="fc-row fc-widget-header" style="border-right-width: 1px; margin-right: 16px;"><table><thead><tr><th class="fc-axis fc-widget-header" style="width: 43px;"></th><th class="fc-day-header fc-widget-header fc-sun">Sun 10/26</th><th class="fc-day-header fc-widget-header fc-mon">Mon 10/27</th><th class="fc-day-header fc-widget-header fc-tue">Tue 10/28</th><th class="fc-day-header fc-widget-header fc-wed">Wed 10/29</th><th class="fc-day-header fc-widget-header fc-thu">Thu 10/30</th><th class="fc-day-header fc-widget-header fc-fri">Fri 10/31</th><th class="fc-day-header fc-widget-header fc-sat">Sat 11/1</th></tr></thead></table></div></td></tr></thead><tbody><tr><td class="fc-widget-content"><div class="fc-day-grid"><div class="fc-row fc-week fc-widget-content" style="border-right-width: 1px; margin-right: 16px;"><div class="fc-bg"><table><tbody><tr><td class="fc-axis fc-widget-content" style="width: 43px;"><span>all-day</span></td><td class="fc-day fc-widget-content fc-sun fc-past" data-date="2014-10-26"></td><td class="fc-day fc-widget-content fc-mon fc-past" data-date="2014-10-27"></td><td class="fc-day fc-widget-content fc-tue fc-past" data-date="2014-10-28"></td><td class="fc-day fc-widget-content fc-wed fc-past" data-date="2014-10-29"></td><td class="fc-day fc-widget-content fc-thu fc-past" data-date="2014-10-30"></td><td class="fc-day fc-widget-content fc-fri fc-past" data-date="2014-10-31"></td><td class="fc-day fc-widget-content fc-sat fc-past" data-date="2014-11-01"></td></tr></tbody></table></div><div class="fc-content-skeleton"><table><tbody><tr><td class="fc-axis" style="width: 43px;"></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="fc-event-container"><a class="fc-day-grid-event fc-event fc-start fc-end fc-draggable fc-resizable"><div class="fc-content"> <span class="fc-title">All Day Event</span></div><div class="fc-resizer"></div></a></td></tr></tbody></table></div></div></div><hr class="fc-widget-header"><div class="fc-time-grid-container fc-scroller" style="height: 598px;"><div class="fc-time-grid"><div class="fc-bg"><table><tbody><tr><td class="fc-axis fc-widget-content" style="width: 43px;"></td><td class="fc-day fc-widget-content fc-sun fc-past" data-date="2014-10-26"></td><td class="fc-day fc-widget-content fc-mon fc-past" data-date="2014-10-27"></td><td class="fc-day fc-widget-content fc-tue fc-past" data-date="2014-10-28"></td><td class="fc-day fc-widget-content fc-wed fc-past" data-date="2014-10-29"></td><td class="fc-day fc-widget-content fc-thu fc-past" data-date="2014-10-30"></td><td class="fc-day fc-widget-content fc-fri fc-past" data-date="2014-10-31"></td><td class="fc-day fc-widget-content fc-sat fc-past" data-date="2014-11-01"></td></tr></tbody></table></div><div class="fc-slats"><table><tbody><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>12am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>1am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>2am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>3am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>4am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>5am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>6am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>7am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>8am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>9am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>10am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>11am</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>12pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>1pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>2pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>3pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>4pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>5pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>6pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>7pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>8pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>9pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>10pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr><tr><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"><span>11pm</span></td><td class="fc-widget-content"></td></tr><tr class="fc-minor"><td class="fc-axis fc-time fc-widget-content" style="width: 43px;"></td><td class="fc-widget-content"></td></tr></tbody></table></div><hr class="fc-widget-header" style="display: none;"><div class="fc-content-skeleton"><table><tbody><tr><td class="fc-axis" style="width: 43px;"></td><td><div class="fc-event-container"></div></td><td><div class="fc-event-container"><a class="fc-time-grid-event fc-event fc-start fc-end  fc-draggable fc-resizable" style="top: 329px; bottom: -461px; z-index: 1; left: 0%; right: 0%;"><div class="fc-content"><div class="fc-time" data-start="7:30" data-full="7:30 AM - 10:30 AM"><span>7:30 - 10:30</span></div><div class="fc-title">Test1</div></div><div class="fc-bg"></div><div class="fc-resizer"></div></a></div></td><td><div class="fc-event-container"><a class="fc-time-grid-event fc-event fc-start fc-end  fc-draggable fc-resizable" style="top: 417px; bottom: -527px; z-index: 1; left: 0%; right: 0%;"><div class="fc-content"><div class="fc-time" data-start="9:30" data-full="9:30 AM - 12:00 PM"><span>9:30 - 12:00</span></div><div class="fc-title">Test2</div></div><div class="fc-bg"></div><div class="fc-resizer"></div></a></div></td><td><div class="fc-event-container"></div></td><td><div class="fc-event-container"></div></td><td><div class="fc-event-container"></div></td><td><div class="fc-event-container"></div></td></tr></tbody></table></div></div></div></td></tr></tbody></table></div>
+*/
 
 /*.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
     color: white;
