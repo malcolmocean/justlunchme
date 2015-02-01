@@ -1,1 +1,25 @@
-<a href="/auth/google">Sign On with Google</a>
+<script>
+function signInCallback(authResult) {
+  if (authResult.code) {
+    $.post('/auth/google/callback', { code: authResult.code})
+    .done(function(data) {
+      $('#signinButton').hide();
+    }); 
+  } else if (authResult.error) {
+    console.log('There was an error: ' + authResult.error);
+  }
+};
+</script>
+
+<div id="signinButton">
+  <span class="g-signin"
+    data-scope="https://www.googleapis.com/auth/plus.login"
+    data-clientid="791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com"
+    data-redirecturi="postmessage"
+    data-accesstype="offline"
+    data-cookiepolicy="single_host_origin"
+    data-callback="signInCallback">
+  </span>
+</div>
+<div id="result"></div>
+

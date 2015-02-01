@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var util = require('util')
-var GoogleStrategy = require('passport-google').Strategy;
+var GooglePlusStrategy = require('passport-google-plus');
 
 var async = require('async');
 var app = express();
@@ -32,9 +32,9 @@ var realm;
 if (process.env.RACK_ENV == "development") {
   realm = "http://localhost:3000/";
 } else if (process.env.RACK_ENV == "production") {
-  realm = "http://www.justlunch.me:3000/";
+  realm = "http://www.justlunch.me";
 } else {
-  realm = "http://www.justlunch.me:3000/";
+  realm = "http://www.justlunch.me";
 }
 
 console.log(process.env.RACK_ENV);
@@ -104,24 +104,20 @@ passport.deserializeUser(function(obj, done) {
 });
 
 
-// Use the GoogleStrategy within Passport.
+// Use the GooglePlusStrategy within Passport.
 //   Strategies in passport require a `validate` function, which accept
 //   credentials (in this case, an OpenID identifier and profile), and invoke a
 //   callback with a user object.
-passport.use(new GoogleStrategy({
-    returnURL: realm + 'auth/google/return',
-    realm: realm,
+passport.use(new GooglePlusStrategy({
+    clientId: '791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com',
+    clientSecret: '-2_lxxQt19bOpY2-2C_YHTIP',
+    // returnURL: realm + 'auth/google/return',
+    // realm: realm,
   },
-  function(identifier, profile, done) {
+  function(tokens, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-      
-      // To keep the example simple, the user's Google profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Google account with a user record in your database,
-      // and return that user instead.
-      profile.identifier = identifier;
-      return done(null, profile);
+      return done(null, profile, tokens);
     });
   }
 ));
@@ -180,6 +176,11 @@ app.get('/account', ensureAuthenticated, function(req, res){
 
 app.get('/login', function(req, res){
   res.render('login', { user: req.user });
+});
+
+app.post('/auth/google/callback', passport.authenticate('google'), function(req, res) {
+    // Return user back to client 
+    res.send(req.user);
 });
 
 // GET /auth/google
