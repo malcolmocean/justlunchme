@@ -14,6 +14,9 @@ var GooglePlusStrategy = require('passport-google-plus');
 
 var async = require('async');
 var app = express();
+var Mailgun = require("mailgun").Mailgun;
+require('./mailgunplus')(mg);
+var mg = new Mailgun(process.env.MAILGUN_KEY || process.env.JLM_MAILGUN_KEY);
 
 require('./models/user');
 var User = mongoose.model('User');
@@ -27,6 +30,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
   console.log("DB connection open");
 });
+
 
 var realm;
 if (process.env.RACK_ENV == "development") {
@@ -42,32 +46,44 @@ console.log(realm);
 
 app.get('/textslots', function (req, res) {
   User.find({}, function (err, users) {
-    async.each(users, function (user, callback) {
-      user.textslots = [];
-      for (var i = 0; i < user.slots.length; i++) {
-        user.textslots.push(user.slots[i].ymd+"@"+user.slots[i].hour);
-      }
-      user.save(callback)
-    }, function (err) {
-      res.send(err || users);
-    });
+    if (users.length == 0) {
+      res.send ("nope");
+    } else {
+      res.send (users);
+    }
   });
 });
 
+function checkWhosLoggedIn (req, res, next) {
+  // code here that handles auth
+  req.session.loggedinuser = "noah.maccalum";
+  next();
+}
+
+app.post('/updateMyTopFriendsList', checkWhosLoggedIn, function (req, res) {
+  User.findOne({fbusername : req.session.loggedinuser}, function (err, user) {
+    user.friendList = req.body.friendList;
+
+  });
+  res.send("we did it");
+});
+
 app.get('/userme', function (req, res) {
-  User.findOne({name: "Malcolm Ocean"}, function (err, user) {
-    user.friendList = [
-      'noah.maccallum'
-    ],
-    user.slots = [{
-      ymd: '2015-02-01',
-      hour: 13
-    }, {
-      ymd: '2015-02-01',
-      hour: 14
-    }];
-    user.save(function (err) {
-      res.send(err || user);
+  res.send("hi")
+});
+
+app.get('/emailuser/:fbusername', function (req, res) {
+  User.findOne({fbusername: req.params.fbusername}, function (err, user) {
+    mg.checkAndSendHtml({
+      from: "JustLunchMe Test <test@justlunch.me>",
+      to: user.email,
+      subject: "Testing the JustLunchMe email server!",
+      html: "o hai",
+      headers: {},
+      callback: function(errm) {
+        // throw errm
+        res.send({err: errm, result: !errm && "success"});
+      }
     });
   });
 });
@@ -129,7 +145,7 @@ passport.use(new GooglePlusStrategy({
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'mustache');
-app.set('layout', 'layout');
+app.set('layout', 'layout1');
 // app.enable('view cache');
 app.engine('mustache', require('hogan-express'))
 
@@ -166,7 +182,18 @@ app.get('/', function(req, res, next) {
   });
 });
 
+app.get('/sidebartest', function(req, res, next) {
+  console.log("req.url", req.url);
 
+  res.render('index', {
+    title: 'JustLunch.me',
+    list: [
+      {name: "noah", program: "nano"},
+      {name: "will", program: "tron"},
+      {name: "malcolm", program: "syde"}
+    ]
+  });
+});
 
 
 app.get('/account', ensureAuthenticated, function(req, res){

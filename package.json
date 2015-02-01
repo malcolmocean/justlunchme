@@ -16,6 +16,7 @@
     "express-session": "~1.10.1",
     "hogan-express": "~0.5.2",
     "mongoose": "~3.8.22",
+    "mailgun": "~0.5.0",
     "morgan": "~1.5.1",
     "passport": "^0.2.1",
     "passport-google": "^0.3.0",
