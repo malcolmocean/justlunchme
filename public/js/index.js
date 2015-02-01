@@ -18,7 +18,7 @@ app.filter('searchfilter', [function () {
     var filtered = [];
     angular.forEach(items, function(item, ix) {
       if (item && item.searchString.indexOf(search.text) >= 0 ) {
-        // item.ix = ix;
+        item.ix = ix;
         filtered.push(item);
       }
     });
@@ -55,6 +55,7 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
   $scope.searchKeypress = function ($event) {
     if ($event.charCode == KEYS.ENTER) {
       if ($scope.search.singleton) {
+        $scope.search.singleton.ix = $scope.lunchList.length;
         $scope.lunchList.push($scope.search.singleton);
         for (var i=0; i < $scope.friends.length; i++) {
           if ($scope.friends[i].email == $scope.search.singleton.email) {
@@ -64,11 +65,15 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
         }
         $scope.search = {};
       } else if ($scope.search.validemail) {
-        $scope.lunchList.push({email: $scope.search.text});
+        $scope.lunchList.push({email: $scope.search.text, ix: $scope.lunchList.length});
         // TODO send email, have ajax track status of that invite
         $scope.search = {};
       }
     }
+  }
+
+  var user = {
+    email: "malcolm.m.ocean@gmail.com"
   }
 
   var lunchMap = {};
@@ -77,20 +82,52 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
     $scope.friends = [];
     angular.forEach(list, function(item, ix) {
       if (item.email && !/@fut.io/.test(item.email) && !lunchMap[item.email] &&
-        !/@(reply|groups).facebook.com/.test(item.email) &&
-        !/^support@/.test(item.email)) {
-        item.searchString = item.name.toLowerCase() + ' ' + item.email.toLowerCase()
-        item.ix = $scope.friends.length;
-        $scope.friends.push(item);
+        // !/@(reply|groups).facebook.com/.test(item.email) &&
+        // !/@\w*.?craigslist.org/.test(item.email) &&
+        // !/^support@/.test(item.email) &&
+        /@gmail.com/.test(item.email)
+        ) {
+        var friend = {
+          email: item.email,
+          name: item.name,
+          searchString: item.name.toLowerCase() + ' ' + item.email.toLowerCase(),
+          ix: $scope.friends.length
+        }
+        $scope.friends.push(friend);
       }
     });
     // $scope.friends = list;
     console.log("$scope.friends[1]", $scope.friends[1]);
     $scope.$apply();
-  }
 
-  var user = {
-    email: "malcolm.m.ocean@gmail.com"
+    console.log("JSON.stringify($scope.friends).length", JSON.stringify($scope.friends).length);
+
+    $http.post('/'+user.email+'/contactsInMemory', $scope.friends);
+  }
+  $(function () {
+    $http.get('/'+user.email+'/contactsInMemory').success(function (friends) {
+      console.log("contactsInMemory", friends);
+      if (!$scope.friends) {
+        $scope.friends = friends;
+      }
+    });
+  });
+
+  $scope.removeFromList = function (person) {
+    person.deleting = true; // TODO use for spinner
+    $http.delete('/'+user.email+'/lunchList/'+person.email).success(function () {
+      for (var i = 0; i < $scope.lunchList.length; i++) {
+        if ($scope.lunchList[i].email === person.email) {
+          $scope.lunchList.splice(i, 1);
+          break;
+        }
+      }
+      // console.log("==========================================");
+      // console.log("==========================================");
+      // console.log("THIS NEEDS TO ACTUALLY LOOK THROUGH THINGS");
+      // console.log("==========================================");
+      // console.log("==========================================");
+    });
   }
 
   $http.get('/'+user.email+'/lunchList').success(function (list) {

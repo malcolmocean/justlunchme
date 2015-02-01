@@ -2,6 +2,24 @@
   border-right: 3px solid #B36000;
 }
 
+.btn-login {
+  font-size: 40px;
+  font-family: 'Raleway';
+  font-weight: 900;
+  padding: 10px 40px;
+  background: #DC4C4C;
+  border: 2px solid white;
+  color: white;
+}
+
+.subtitle {
+  font-family: 'Raleway';
+  font-size: 16px;
+  color: rgba(255,255,255,0.7);
+  display: inline-block;
+  margin: -10px 0 8px;
+}
+
 .label-search {
   margin: 5px 0;
   position: relative;
@@ -34,7 +52,7 @@
   background: white;
 }
 
-.friend-list li a, .lunch-list li {
+.friend-list li a, .lunch-list li a {
   padding: 6px 12px;
   display: block;
   text-decoration: none;
@@ -48,6 +66,19 @@
 .friend-list li a:hover {
   cursor: pointer;
   background: #cce5ff;
+}
+
+.lunch-list .remove-friend {
+  color: red;
+  float: right;
+  display: none;
+  background: none;
+  border: 0;
+  margin-right: -6px;
+}
+
+.lunch-list a:hover .remove-friend {
+  display: inline-block;
 }
 
 .hasapp {
@@ -66,3 +97,5 @@
 .grey {
   color: #aaa;
 }
+
+

@@ -135,7 +135,7 @@ app.engine('mustache', require('hogan-express'))
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '500kb'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cookieSession({ secret: 'secret' }));
@@ -184,6 +184,23 @@ app.get('/:email/lunchList', function (req, res) {
   User.findOne({email: req.params.email}, "lunchList", function (err, user) {
     res.send(err || user.lunchList);
   });
+});
+
+app.delete('/:email/lunchList/:otherEmail', function (req, res) {
+  User.findOneAndUpdate({email: req.params.email}, {$pull: {lunchList: {email: req.params.otherEmail}}}, function (err, data) {
+    res.status(err ? 500 : 204).send();
+  });
+});
+
+var contactsInMemory = {};
+
+app.post('/:email/contactsInMemory', function (req, res) {
+  contactsInMemory[req.params.email] = req.body;
+  res.status(204).send();
+});
+
+app.get('/:email/contactsInMemory', function (req, res) {
+  res.send(contactsInMemory[req.params.email]);
 });
 
 app.post('/add', mGetUser, function (req, res) {
