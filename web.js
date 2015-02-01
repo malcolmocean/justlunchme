@@ -168,28 +168,49 @@ function mGetUser (req, res, next) {
   });
 }
 
+app.get('/:email/notifications.json', /* PERM */ function (req, res) {
+  User.find({friendsByEmail: req.params.email}, "name email", function (err, users) {
+    res.send(users);
+  });
+});
+
+app.get('/:email/model', function (req, res) {
+  User.findOne({email: req.params.email}, function (err, user) {
+    res.send(err || user);
+  });
+});
+
+app.get('/:email/lunchList', function (req, res) {
+  User.findOne({email: req.params.email}, "lunchList", function (err, user) {
+    res.send(err || user.lunchList);
+  });
+});
+
 app.post('/add', mGetUser, function (req, res) {
-  var rawEmail = req.body.email.match(/^[^<]*<?([^>]*)>?.*$/)[1];
+  var mt = req.body.email.match(/^[^<]*<?([^>]*)>?.*$/);
+  var rawEmail = mt[1] || mt[0];
   User.findOne({email: rawEmail}, function (err, alreadyUser) {
     if (err) {
       res.send(500, err);
     } else {
       if (alreadyUser) {
-        res.send(alreadyUser)
+        // res.send(alreadyUser)
       } else {
-        // send email invite
-        res.send("inviting by email")
+        // res.send("inviting by email");
       }
-      req.user.friendList.push(req.body.email)
+      req.user.lunchList.push({
+        name: req.body.name,
+        email: req.body.email
+      });
       req.user.save(function (err) {
-        res.send(err ? 500 : 200, err || "");
-      })
-      // res.send({status: "success"});
+        res.status(err ? 500 : 200).send(err || "");
+        console.log("err", err);
+      });
     }
   });
   // var user = req.user
-  console.log("req.user", req.user);
-  res.send(req.user);
+  // console.log("req.user", req.user);
+  // res.send(req.user);
 });
 
 app.get('/account', ensureAuthenticated, function(req, res) {

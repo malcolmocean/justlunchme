@@ -4,8 +4,10 @@ var UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   fbusername: { type: String, required: true },
-  friendList: [String],
-  friendsByEmail: [String],
+  lunchList: [{
+    name: String,
+    email: {type: String, required: true}
+  }],
   slots: [{
     ymd: { type: String, required: true},
     hour: { type: Number, required: true}
