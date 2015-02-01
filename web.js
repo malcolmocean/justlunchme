@@ -56,9 +56,9 @@ var emailNonUser = function (email, inviterName) {
     html: "Hello<!--name-->!" +
       "Your friend " + inviterName + " has kindly expressed an interest in catching up with you over lunch. " +
       "We’re JustLunchMe, a helpful new webapp from the University of Waterloo, and we’d like to help. All we need is 60 seconds of your time, and we’ll let you know when you’ve both got a free slot to have lunch. Plus, as you add friends we will recommend you lunch meetings whenever you’re available. " +
-      "Just go to <a href='http://www.justlunch.me'>JustLunch.me</a> - hope to see you there!"
+      "Just go to <a href='http://www.justlunch.me'>JustLunch.me</a> - hope to see you there!" +
       "<p>Sincerely,<br>" +
-      "The JustLunch.me team</p>"
+      "The JustLunch.me team</p>",
     headers: {},
     callback: function(errm) {
       res.send({err: errm, result: !errm && "success"});
@@ -75,9 +75,9 @@ var emailExistingUser = function (email, inviterName) {
     html: "Hello<!--name-->!" +
       "Your friend " + inviterName + " has kindly expressed an interest in catching up with you over lunch. " +
       "We’re JustLunchMe, a helpful new webapp from the University of Waterloo, and we’d like to help. All we need is 60 seconds of your time, and we’ll let you know when you’ve both got a free slot to have lunch. Plus, as you add friends we will recommend you lunch meetings whenever you’re available. " +
-      "Just go to <a href='http://www.justlunch.me'>JustLunch.me</a> - hope to see you there!"
+      "Just go to <a href='http://www.justlunch.me'>JustLunch.me</a> - hope to see you there!" +
       "<p>Sincerely,<br>" +
-      "The JustLunch.me team</p>"
+      "The JustLunch.me team</p>",
     headers: {},
     callback: function(errm) {
       res.send({err: errm, result: !errm && "success"});

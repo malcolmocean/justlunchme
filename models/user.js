@@ -22,6 +22,8 @@ UserSchema.virtual('bitslots').get(function () {
     var slot = this.slots[i];
     var ymd = slot.substr(0, 10);
     var t2b = time2bit(slot.start, slot.end);
+    result[ymd] = result[ymd] || 0;
+    result[ymd] = result[ymd] | t2b; // bitwise OR
   }
 });
 
