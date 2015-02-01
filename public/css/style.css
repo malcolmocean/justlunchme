@@ -1,6 +1,12 @@
 .adder-box {
   border-right: 3px solid #cba;
+}
 
+.label-search {
+  margin: 5px 0;
+  position: relative;
+  left: 18px;
+  color: #FFAD90;
 }
 
 .form-group-search {
@@ -9,23 +15,38 @@
   overflow: auto;
 }
 
-.friend-list {
+.friend-list, .lunch-list {
   list-style: none;
   padding: 0;
   margin: 0 27px 10px;
   border-bottom: 1px solid #ccd;
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.friend-list li {
-  padding: 6px 12px;
+.friend-list li, .lunch-list li {
+  padding: 0;
   border-top: 1px solid #ccd;
   border-left: 1px solid #ccd;
   border-right: 1px solid #ccd;
   background: white;
 }
 
+.friend-list li a, .lunch-list li {
+  padding: 6px 12px;
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+
 .friend-list.green li {
   background: #ddffe5;
+}
+
+.friend-list li a:hover {
+  cursor: pointer;
+  background: #cce5ff;
 }
 
 .hasapp {

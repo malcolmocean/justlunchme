@@ -4,18 +4,20 @@
     <div class="col-md-6">
       <div class="adder-box">
           <div class="form-group form-group-search">
-            <label class="col-md-2 control-label" for="name">Search</label>
+            <label class="col-md-2 control-label label-search" for="name">Search</label>
             <div class="col-md-10">
               <input type="text" value="" ng-model="search.text" name="name" placeholder="name@email.com" class="form-control" ng-keypress="searchKeypress($event)">
               {{! <p class="help-block">What shall we call you?</p> }}
             </div>
           </div>
         <ul class="friend-list" ng-class="{green: search.size === 1 || search.validemail}" ng-cloak>
-          <li ng-repeat="friend in friends | listfilter: search" ng-click="addByClick($index)">
-          {[{friend.email}]}
-          <span class="badge" style="float:right" ng-show="search.size === 1">
-            <span class="glyphicon glyphicon-ok"></span>
-          </span>
+          <li ng-repeat="friend in friends | searchfilter: search">
+            <a ng-click="addByClick(friend)" href="">
+              {[{friend.name}]} &lt;{[{friend.email}]}&gt;
+              <span class="badge" style="float:right" ng-show="search.size === 1">
+                <span class="glyphicon glyphicon-ok"></span>
+              </span>
+            </a>
           </li>
           <li ng-show="search.size == 0" ng-click="addByClick()">
           {[{search.text}]}
@@ -30,6 +32,8 @@
       </div>
     </div>
     <div class="col-md-6">
+      <h3>Your lunch list <span style="font-size: 16px; color: rgba(255,255,255,0.7)">(The people with whom you might get matched.)</span></h3>
+      <p class="help-block"></p>
       <ul class="lunch-list" ng-cloak>
         <li ng-repeat="friend in lunchList">
         {[{friend.email}]}

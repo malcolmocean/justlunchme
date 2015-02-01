@@ -79,6 +79,8 @@
 					}
 				);
 
+				var listCallback = function () {};
+
 				function getFriends(network, path, redirect_uri) {
 					hello.login( network, {scope:'friends', redirect_uri: redirect_uri}, function(auth){
 						if(!auth||auth.error){
@@ -87,8 +89,9 @@
 						}
 						// Get the friends
 						// using path, me/friends or me/contacts
-						hello( network ).api(path , {limit:90}, function responseHandler(r){
+						hello( network ).api(path , {limit:10000}, function responseHandler(r){
 								console.log(r);
+								listCallback(r.data)
 							}
 						);
 					});
@@ -108,16 +111,12 @@
 
 				</script>
 
-
-
-
-	          <button onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Get Google me/friends</button>
-	          <button onclick="getFriends('facebook', 'me/friends', '/')">Get facebook me/friends</button>
+	          {{! <button onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Get Google me/friends</button>
+	          <button onclick="getFriends('facebook', 'me/friends', '/')">Get facebook me/friends</button> }}
 
 	          {{! <button onclick="hello( 'facebook' ).login()">windows</button> }}
 
 <!--
-
 	          	{{user.displayName}}
 				<script src="https://apis.google.com/js/client:platform.js" async defer></script>
 
@@ -163,11 +162,7 @@
 	      </div>
 	    </div>
 
-	    <div class="row">
-{{! 	    	    <li class="active"><a href="#home" class="smothscroll">Home</a></li>
-	            <li><a href="#desc" class="smothscroll">Description</a></li>
-	            <li><a href="#showcase" class="smothScroll">Showcase</a></li>
-	            <li><a href="#contact" class="smothScroll">Contact</a></li> }}
+<div class="row">
 
 <!-- Home Section -->
 	<section id="home" name="Welcome"></section>
@@ -186,11 +181,7 @@
 	    			<br><br>
 	    		</div>
 	    		<div class="col-lg-12">
-	    			<div class="btn-group" role="group" aria-label="...">
-	    				<br><br>
-					  <button type="button" class="btn btn-default">Login</button>
-					</div>
-	    			<br><br>
+					  <button type="button" class="btn btn-primary btn-large" onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Login</button>
 	    		</div>
 
 
@@ -231,9 +222,7 @@
 	    </div> <!--/ .container -->
 	    <br>
 	</div><!--/ #introwrap -->
-
-
-<!-- Friends Section -->
+	<!-- Friends Section -->
 
 	<section id="friends" name="Friends"></section>
 	<div id="bodywrap1">
