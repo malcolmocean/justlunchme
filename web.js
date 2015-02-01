@@ -32,18 +32,6 @@ db.once('open', function callback () {
 });
 
 
-var realm;
-if (process.env.RACK_ENV == "development") {
-  realm = "http://localhost:3000/";
-} else if (process.env.RACK_ENV == "production") {
-  realm = "http://www.justlunch.me";
-} else {
-  realm = "http://www.justlunch.me";
-}
-
-console.log(process.env.RACK_ENV);
-console.log(realm);
-
 app.get('/textslots', function (req, res) {
   User.find({}, function (err, users) {
     if (users.length == 0) {
@@ -127,8 +115,6 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new GooglePlusStrategy({
     clientId: '791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com',
     clientSecret: '-2_lxxQt19bOpY2-2C_YHTIP',
-    // returnURL: realm + 'auth/google/return',
-    // realm: realm,
   },
   function(tokens, profile, done) {
     // asynchronous verification, for effect...
@@ -197,6 +183,7 @@ app.get('/sidebartest', function(req, res, next) {
 
 
 app.get('/account', ensureAuthenticated, function(req, res){
+  console.log('askdlfjalsdfkj');
   console.log(req.user);
   res.render('account', { user: req.user });
 });
@@ -207,47 +194,19 @@ app.get('/login', function(req, res){
 
 app.post('/auth/google/callback', passport.authenticate('google'), function(req, res) {
     // Return user back to client 
+    console.log('callback');
     res.send(req.user);
 });
-
-// GET /auth/google
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  The first step in Google authentication will involve redirecting
-//   the user to google.com.  After authenticating, Google will redirect the
-//   user back to this application at /auth/google/return
-app.get('/auth/google', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
-
-// GET /auth/google/return
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
-app.get('/auth/google/return', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/account');
-  });
 
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
 
-// Simple route middleware to ensure user is authenticated.
-//   Use this route middleware on any resource that needs to be protected.  If
-//   the request is authenticated (typically via a persistent login session),
-//   the request will proceed.  Otherwise, the user will be redirected to the
-//   login page.
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/login')
 }
-
-
 
 
 
