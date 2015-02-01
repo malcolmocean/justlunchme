@@ -95,7 +95,7 @@
 	          <button onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Get Google me/friends</button>
 	          <button onclick="getFriends('facebook', 'me/friends', '/')">Get facebook me/friends</button>
 
-	          <button onclick="hello( 'facebook' ).login()">windows</button>
+	          {{! <button onclick="hello( 'facebook' ).login()">windows</button> }}
 
 <!--
 
@@ -145,7 +145,6 @@
 	    </div>
 
 	    <div class="row">
-	    {{{yield}}}
 {{! 	    	    <li class="active"><a href="#home" class="smothscroll">Home</a></li>
 	            <li><a href="#desc" class="smothscroll">Description</a></li>
 	            <li><a href="#showcase" class="smothScroll">Showcase</a></li>
@@ -180,6 +179,11 @@
 	    </div> <!--/ .container -->
 	</div><!--/ #headerwrap -->
 
+
+<div style="background: #662108; color: black">
+
+{{{yield}}}
+</div>
 
 <!-- Intro Section -->
 	<section id="intro" name="intro"></section>
