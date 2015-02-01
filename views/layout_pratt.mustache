@@ -129,7 +129,7 @@ var user = {};
       header: {
         left: 'prev,next today',
         center: '',
-        right: '             '
+        right: ''
       },
       eventStartEditable: false,
       eventDurationEditable: false,
@@ -179,11 +179,9 @@ var user = {};
       eventLimit: true, // allow "more" link when too many events
     });
   }
-
 </script>
 
 <div class="row">
-
   <!-- Home Section -->
   <section id="home" name="Welcome"></section>
   <div id="headerwrap">
@@ -192,7 +190,7 @@ var user = {};
         <div class="col-lg-12" style="text-shadow: 0 0 3px black">
           <br><br><br><br>
           <h1>{{! Welcome To  }}<b>JustLunchMe</b></h1>
-          <h3>Reunite with friends. It's like real life Hangouts.</h3>
+          <h3>Catch up with friends. It's like real life Hangouts.</h3>
           <br>
         </div>
         <div class="col-lg-12">
@@ -201,14 +199,11 @@ var user = {};
           <br><br>
         </div>
         <div class="col-lg-12">
-          <button type="button" class="btn btn-login btn-large" onclick="getFriends('google', 'me/contacts', 'oauth2callback')">{{! Login }}Lunch me</button>
+          <button type="button" class="btn btn-login btn-large" onclick="getFriends('google', 'me/contacts', 'oauth2callback')">{{! Login }}Let's do lunch</button>
         </div>
-
-
       </div>
     </div> <!--/ .container -->
   </div><!--/ #headerwrap -->
-
 
   <div style="background: #662108; color: black">
 
@@ -221,6 +216,7 @@ var user = {};
     <div class="container">
       <div class="row centered">
         <h1>Effortless Lunch Scheduling</h1>
+        <h4>...so you never eat alone</h4>
         <br>
         <br>
         <div class="col-lg-4">
@@ -310,7 +306,7 @@ var user = {};
 <section id="contact" name="contact"></section>
 <div id="c">
   <div class="container">
-    <p>Created by <a href="http://www.malcolmocean.com">Malcolm Ocean</a>, Will Cullen and <a href="https://ca.linkedin.com/pub/noah-maccallum/31/949/227">Noah MacCallum</a> at the University of Waterloo for the Winter 2015 <a href=http://www.kik.com/>Kik Hackathon.</a> All code is open source and available on Github.</p>
+    <p style="text-align: center">Created by <a href="http://www.malcolmocean.com">Malcolm Ocean</a>, <a href="https://ca.linkedin.com/in/willcullen">Will Cullen</a> and <a href="https://ca.linkedin.com/pub/noah-maccallum/31/949/227">Noah MacCallum</a> at the University of Waterloo for the Winter 2015 <a href=http://www.kik.com/>Kik Hackathon.</a>{{!  All code is open source and available on Github. }}</p>
   </div>
 </div>
 

@@ -18,7 +18,7 @@ var Mailgun = require("mailgun").Mailgun;
 require('./mailgunplus')(mg);
 var mg = new Mailgun(process.env.MAILGUN_KEY || process.env.JLM_MAILGUN_KEY);
 
-require('./models/user');
+var time2bit = require('./models/user').time2bit;
 var User = mongoose.model('User');
 
 // var db = require('./controllers/database.js');
@@ -47,6 +47,43 @@ app.get('/emailuser/:email', function (req, res) {
   });
 });
 
+var emailNonUser = function (email, inviterName) {
+  mg.checkAndSendHtml({
+    from: "JustLunch.Me <hi@justlunch.me>",
+    to: email,
+    subject: inviterName + " wants to go for lunch with you :)",
+    html: "Hi,",
+    html: "Hello<!--name-->!" +
+      "Your friend " + inviterName + " has kindly expressed an interest in catching up with you over lunch. " +
+      "We’re JustLunchMe, a helpful new webapp from the University of Waterloo, and we’d like to help. All we need is 60 seconds of your time, and we’ll let you know when you’ve both got a free slot to have lunch. Plus, as you add friends we will recommend you lunch meetings whenever you’re available. " +
+      "Just go to <a href='http://www.justlunch.me'>JustLunch.me</a> - hope to see you there!" +
+      "<p>Sincerely,<br>" +
+      "The JustLunch.me team</p>",
+    headers: {},
+    callback: function(errm) {
+      res.send({err: errm, result: !errm && "success"});
+    }
+  });
+}
+
+var emailExistingUser = function (email, inviterName) {
+  mg.checkAndSendHtml({
+    from: "JustLunch.Me <hi@justlunch.me>",
+    to: email,
+    subject: inviterName + " wants to go for lunch with you :)",
+    html: "Hi,",
+    html: "Hello<!--name-->!" +
+      "Your friend " + inviterName + " has kindly expressed an interest in catching up with you over lunch. " +
+      "We’re JustLunchMe, a helpful new webapp from the University of Waterloo, and we’d like to help. All we need is 60 seconds of your time, and we’ll let you know when you’ve both got a free slot to have lunch. Plus, as you add friends we will recommend you lunch meetings whenever you’re available. " +
+      "Just go to <a href='http://www.justlunch.me'>JustLunch.me</a> - hope to see you there!" +
+      "<p>Sincerely,<br>" +
+      "The JustLunch.me team</p>",
+    headers: {},
+    callback: function(errm) {
+      res.send({err: errm, result: !errm && "success"});
+    }
+  });
+}
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -163,6 +200,12 @@ app.delete('/:email/lunchList/:otherEmail', function (req, res) {
   });
 });
 
+// app.get('/:email/delete', function (req, res) {
+//   User.find({ email: req.params.email }).remove(function (err) {
+//     res.send(err || "success");
+//   })
+// });
+
 app.post('/:email/add', function (req, res) {
   User.findOne({email: req.params.email}, function (err, user) {
     var mt = req.body.email.match(/^[^<]*<?([^>]*)>?.*$/);
@@ -172,9 +215,9 @@ app.post('/:email/add', function (req, res) {
         res.send(500, err);
       } else {
         if (alreadyUser) {
-          // res.send(alreadyUser)
+          emailExistingUser(email, user.name);
         } else {
-          // res.send("inviting by email");
+          emailNonUser(email, user.name);
         }
         // user.lunchList = [];
         user.slots = [];
@@ -405,37 +448,6 @@ function matchTimeSlot(slotA, slotB){
 
   return true;
 }
-
-
-function time2bit(startTime, endTime) {
-  var hour = 10;
-  var minute = '00';
-  var bitMask = 0;
-  var avail = false;
-  for (i=0; i<16; i++){
-    if (i%2 == 0) {
-      minute = '00';
-    } else {
-      minute = '30';
-    }
-    
-    hour = Math.floor(i/2) + 10;
-    time = hour + ":" + minute;
-    
-    if (time == startTime) {
-      avail = true;
-    }
-
-    if (time == endTime) {
-      return bitMask;
-    }
-    if (avail) {
-      bitMask += 1<<i;
-    }
-  }
-  return bitMask;
-} 
-
 
 function matchingService(req, res) {
 
