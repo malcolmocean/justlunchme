@@ -145,7 +145,7 @@ app.get('/:email/notifications.json', /* PERM */ function (req, res) {
   });
 });
 
-RACK_ENV === "development" && app.get('/:email/model', function (req, res) {
+process.env.RACK_ENV === "development" && app.get('/:email/model', function (req, res) {
   User.findOne({email: req.params.email}, function (err, user) {
     res.send(err || user);
   });
@@ -398,41 +398,11 @@ function matchTimeSlots(slotA, slotB) {
 
   bitMask = bitA & bitB;
   bitString = bitMask.toString(2);
-  
+
 
 
   return true;
 }
-
-
-function time2bit(startTime, endTime) {
-  var hour = 10;
-  var minute = '00';
-  var bitMask = 0;
-  var avail = false;
-  for (i=0; i<20; i++){
-    if (i%2 == 0) {
-      minute = '00';
-    } else {
-      minute = '30';
-    }
-    hour = hour +i;
-    time = hour + minute;
-
-    if (time == startTime) {
-      avail = true;
-    }
-    if (time == endTime) {
-      return bitMask;
-    }
-    if (avail) {
-      bitMask += 1<<i;
-    }
-  }
-} 
-
-
-
 
 function matchingService(req, res) {
 
@@ -458,7 +428,7 @@ function matchingService(req, res) {
       }
 
       user.isMatched = false;
-      
+
 
       // User.find({email: {$in: okayEmails}, lunchList.email: user.email}, function (err, docs) {
       User.find({email: {$in: okayEmails}}, function (err, friends) {
@@ -471,7 +441,7 @@ function matchingService(req, res) {
           }
         }
         user.mutual_avail_friends = mutual_avail_friends;
-        
+
         next();
       });
     }, function (err) {
