@@ -10,6 +10,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var async = require('async');
 var app = express();
+var Mailgun = require("mailgun").Mailgun;
+require('./mailgunplus')(mg);
+var mg = new Mailgun(process.env.MAILGUN_KEY || process.env.JLM_MAILGUN_KEY);
 
 require('./models/user');
 var User = mongoose.model('User');
@@ -38,6 +41,20 @@ app.get('/textslots', function (req, res) {
   });
 });
 
+function checkWhosLoggedIn (req, res, next) {
+  // code here that handles auth
+  req.session.loggedinuser = "noah.maccalum";
+  next();
+}
+
+app.post('/updateMyTopFriendsList', checkWhosLoggedIn, function (req, res) {
+  User.findOne({fbusername : req.session.loggedinuser}, function (err, user) {
+    user.friendList = req.body.friendList;
+
+  });
+  res.send("we did it");
+});
+
 app.get('/userme', function (req, res) {
   User.findOne({name: "Malcolm Ocean"}, function (err, user) {
     user.friendList = [
@@ -56,11 +73,27 @@ app.get('/userme', function (req, res) {
   });
 });
 
+app.get('/emailuser/:fbusername', function (req, res) {
+  User.findOne({fbusername: req.params.fbusername}, function (err, user) {
+    mg.checkAndSendHtml({
+      from: "JustLunchMe Test <test@justlunch.me>",
+      to: user.email,
+      subject: "Testing the JustLunchMe email server!",
+      html: "o hai",
+      headers: {},
+      callback: function(errm) {
+        // throw errm
+        res.send({err: errm, result: !errm && "success"});
+      }
+    });
+  });
+});
+
 app.get('/matchfor/:fbusername', function (req, res) {
   User.findOne({fbusername: req.params.fbusername}, function (err, user) {
     User.findOne({
       fbusername: {$in: user.friendList},
-      textslots: {$in: },
+      // textslots: {$in: },
       friendList: user.fbusername
     }, function (err2, matchuser) {
       res.send({
