@@ -37,22 +37,89 @@
 	          <a class="navbar-brand" href="#"><b>JustLunchMe</b></a>
 	        </div>
 	        <div class="navbar-collapse collapse">
-	          <ul class="nav navbar-nav">
+	          <ul class="nav navbar-nav navbar-nav-jlm">
 	            <li class="active"><a href="#home" class="smothscroll">Home</a></li>
-	            <li><a href="#desc" class="smothscroll">Description</a></li>
-	            <li><a href="#showcase" class="smothScroll">Showcase</a></li>
-	            <li><a href="#contact" class="smothScroll">Contact</a></li>
+	            <li><a href="#intro" class="smothscroll">Intro</a></li>
+	            <li><a href="#friends" class="smothScroll">Friends</a></li>
+	            <li><a href="#times" class="smothscroll">Scheduling</a></li>
+	            <li><a href="#feed" class="smothScroll">Match Feed</a></li>
 	          </ul>
 
 	          <div style="float: right; position: relative; margin-top: 10px; margin-bottom: -10px;">
+
+	          <script class="pre" src="/hello.min.js"></script>
+
+				<script class="pre">
+				hello.init( {
+						google : '791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com',
+						facebook : '871627882901365',
+					}
+					, {
+						redirect_uri:'redirect.html',
+						scope:"friends"
+					}
+				);
+
+				function getFriends(network, path, redirect_uri) {
+					hello.login( network, {scope:'friends', redirect_uri: redirect_uri}, function(auth){
+						if(!auth||auth.error){
+							console.log("Signin aborted");
+							return;
+						}
+						// Get the friends
+						// using path, me/friends or me/contacts
+						hello( network ).api(path , {limit:90}, function responseHandler(r){
+								console.log(r);
+							}
+						);
+					});
+				}
+
+				// hello.on('auth.login', function(auth){
+				//     // call user information, for the given network
+				//     hello( auth.network ).api( '/me/contacts' ).then( function(r){
+				//         console.log(r);
+				//     });
+
+				// 	hello( auth.network ).api( '/me/friends').then( function(r){
+				//         console.log(r);
+				//     });
+				// });
+
+
+				</script>
+
+
+
+
+	          <button onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Get Google me/friends</button>
+	          <button onclick="getFriends('facebook', 'me/friends', '/')">Get facebook me/friends</button>
+
+	          <button onclick="hello( 'facebook' ).login()">windows</button>
+
+<!--
+
 	          	{{user.displayName}}
 				<script src="https://apis.google.com/js/client:platform.js" async defer></script>
 
 				<script>
 				function signInCallback(authResult) {
+					console.log(authResult);
 				  if (authResult.code) {
 				    $.post('/auth/google/callback', { code: authResult.code})
 				    .done(function(data) {
+				    	console.log(data);
+
+				    	gapi.client.load('plus','v1', function(){
+						 var request = gapi.client.plus.people.list({
+						   'userId': 'me',
+						   'collection': 'visible'
+						 });
+						 request.execute(function(resp) {
+						   console.log(resp);
+						 });
+						});
+
 				      $('#signinButton').hide();
 				    });
 				  } else if (authResult.error) {
@@ -71,75 +138,78 @@
 				    data-callback="signInCallback">
 				  </span>
 				</div>
-				<div id="result"></div>
+				<div id="result"></div> -->
 	          </div>
 	        </div><!--/.nav-collapse -->
 	      </div>
 	    </div>
 
 	    <div class="row">
-
 	    {{{yield}}}
+{{! 	    	    <li class="active"><a href="#home" class="smothscroll">Home</a></li>
+	            <li><a href="#desc" class="smothscroll">Description</a></li>
+	            <li><a href="#showcase" class="smothScroll">Showcase</a></li>
+	            <li><a href="#contact" class="smothScroll">Contact</a></li> }}
 
-	    </div>
-	<section id="home" name="home"></section>
+<!-- Home Section -->
+	<section id="home" name="Welcome"></section>
 	<div id="headerwrap">
 	    <div class="container">
 	    	<div class="row centered">
 	    		<div class="col-lg-12">
+					<br><br><br><br>
 					<h1>Welcome To <b>JustLunchMe</b></h1>
-					<h3>Show your product with this handsome theme.</h3>
+					<h3>Reunite with friends. Be happy.</h3>
 					<br>
 	    		</div>
+	    		<div class="col-lg-12">
+	    			{{! <div style="height:300px"></div> }}
+	    			{{! <img  style="margin: auto" class="img-responsive" src="/img/women_lunch1.jpg" alt=""> }}
+	    			<br><br>
+	    		</div>
+	    		<div class="col-lg-12">
+	    			<div class="btn-group" role="group" aria-label="...">
+	    				<br><br>
+					  <button type="button" class="btn btn-default">Login</button>
+					</div>
+	    			<br><br>
+	    		</div>
 
-	    		<div class="col-lg-2">
-	    			<h5>Amazing Results</h5>
-	    			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-	    			<img class="hidden-xs hidden-sm hidden-md" src="/img/arrow1.png">
-	    		</div>
-	    		<div class="col-lg-8">
-	    			<img class="img-responsive" src="/img/app-bg.png" alt="">
-	    		</div>
-	    		<div class="col-lg-2">
-	    			<br>
-	    			<img class="hidden-xs hidden-sm hidden-md" src="/img/arrow2.png">
-	    			<h5>Awesome Design</h5>
-	    			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-	    		</div>
+
 	    	</div>
 	    </div> <!--/ .container -->
 	</div><!--/ #headerwrap -->
 
 
-	<section id="desc" name="desc"></section>
+<!-- Intro Section -->
+	<section id="intro" name="intro"></section>
 	<!-- INTRO WRAP -->
-	<div id="intro">
+	<div id="bodywrap2">
 		<div class="container">
 			<div class="row centered">
-				<h1>Designed To Excel</h1>
+				<h1>How This Works</h1>
 				<br>
 				<br>
 				<div class="col-lg-4">
 					<img src="/img/intro01.png" alt="">
-					<h3>Community</h3>
+					<h3>Add Friends</h3>
 					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 				</div>
 				<div class="col-lg-4">
 					<img src="/img/intro02.png" alt="">
-					<h3>Schedule</h3>
+					<h3>Fill in Availability</h3>
 					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 				</div>
 				<div class="col-lg-4">
 					<img src="/img/intro03.png" alt="">
-					<h3>Monitoring</h3>
+					<h3>Get Notified</h3>
 					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
 				</div>
 			</div>
-			<br>
-			<hr>
 	    </div> <!--/ .container -->
 	</div><!--/ #introwrap -->
 
+<<<<<<< HEAD
 	<!-- FEATURES WRAP -->
 	<div id="features">
 		<div class="container">
@@ -249,10 +319,93 @@
 			<br>
 		</div><!-- /container -->
 	</div>
+=======
 
 
+<!-- Friends Section -->
+	<section id="friends" name="Friends"></section>
+	<div id="bodywrap1">
+	    <div class="container">
+	    	<div class="row centered">
+	    		<div class="col-lg-12">
+					<h1>Friends</h1>
+					<h3>Maintain your friend list here.</h3>
+					<br>
+	    		</div>
+
+	    		<div class="col-lg-6">
+	    			<h2>Notifications</h2>
+					<div class="list-group list-left-align">
+					     <a href="#" class="list-group-item"><span class="badge">Add</span>     <span class="badge">Ignore</span> Person 1
+					  </a>
+					  <a href="#" class="list-group-item">Person 2</a>
+					</div>
+
+					<h2>Add Friends</h2>
+					<div class="list-group">
+					  <a href="#" class="list-group-item">Person 1
+					  </a>
+					  <a href="#" class="list-group-item">Person 2</a>
+					  <a href="#" class="list-group-item">Person 3</a>
+					  <a href="#" class="list-group-item">Person 4</a>
+					  <a href="#" class="list-group-item">Person 5</a>
+					</div>
+	    		</div>
+	    		<div class="col-lg-6">
+	    			<h2>Your Friends</h2>
+					<div class="list-group">
+					  <a href="#" class="list-group-item">Person 1
+					  </a>
+					  <a href="#" class="list-group-item">Person 2</a>
+					  <a href="#" class="list-group-item">Person 3</a>
+					  <a href="#" class="list-group-item">Person 4</a>
+					  <a href="#" class="list-group-item">Person 5</a>
+					  <a href="#" class="list-group-item">Person 6</a>
+					  <a href="#" class="list-group-item">Person 7</a>
+					  <a href="#" class="list-group-item">Person 8</a>
+					</div>
+					<br>
+	    		</div>
+	    	</div>
+	    </div> <!--/ .container -->
+	</div><!--/ #headerwrap -->
+
+
+<!-- Calendar Section -->
+	<section id="times" name="Times"></section>
+	<div id="bodywrap2">
+	    <div class="container">
+	    	<div class="row centered">
+	    		<div class="col-lg-12">
+					<h1>Time Selection</h1>
+					<h3>Click and drag your dates on the calendar</h3>
+					<br>
+	    		</div>
+	    		<div class="col-lg-12">
+	    			<img style="margin: auto" class="img-responsive" src="/img/calendar_placeholder.png" alt="">
+	    		</div>
+	    		<br><br>
+	    	</div>
+	    </div> <!--/ .container -->
+	</div><!--/ #headerwrap -->
+
+<!-- Thank you Section -->
+	<section id="times" name="Times"></section>
+	<div id="bodywrap1">
+	    <div class="container">
+	    	<div class="row centered">
+	    		<div class="col-lg-12">
+					<h1><b>Thank you</b></h1>
+					<h3>Check your inbox every day at 10 AM to see if you've been matched!</h3>
+					<br><br><br>
+	    		</div>
+	    	</div>
+	    </div> <!--/ .container -->
+	</div><!--/ #headerwrap -->
+
+<!-- Contact Section -->
 	<section id="contact" name="contact"></section>
-	<div id="footerwrap">
+	<div id="footerwrap" style="display:none">
 		<div class="container">
 			<div class="col-lg-5">
 				<h3>Address</h3>
@@ -288,10 +441,10 @@
 	</div>
 	<div id="c">
 		<div class="container">
-			<p>Created by <a href="http://www.blacktie.co">BLACKTIE.CO</a></p>
-
+			<p>Created by <a href="http://www.malcolmocean.com">Malcolm Ocean</a>, Will Cullen and Noah MacCallum</p>
 		</div>
 	</div>
+
 
 
     <!-- Bootstrap core JavaScript

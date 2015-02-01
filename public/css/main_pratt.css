@@ -4,7 +4,7 @@ body {
     font-family: "Lato";
     font-weight: 300;
     font-size: 16px;
-    color: #555;
+    color: white;
     padding-top: 50px;
 
     -webkit-font-smoothing: antialiased;
@@ -15,7 +15,8 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-family: "Raleway";
     font-weight: 300;
-    color: #333;
+    font-color: white;
+    color: white;
 }
 
 
@@ -71,40 +72,66 @@ a:after {
    Wrap Sections
    ========================================================================== */
 
+/* Overall headerwrap */
+body {
+    background: url(/img/women_lunch1.jpg) center;
+    background-size: 100%;
+    background-attachment: fixed;
+}
 #headerwrap {
-	background-color: #34495e;
-	padding-top: 60px;
+    background: transparent;
+    /*background-color: #f4a13e;*/
+    padding-top: 60px;
+    border-bottom: #bdc3c7 solid 5px;
+    height: 1000px;
 }
 
 #headerwrap h1 {
-	margin-top: 30px;
-	color: white;
-	font-size: 70px;
-	
+    margin-top: 30px;
+    color: white;
+    font-size: 75px;
+    
+}
+
+#headerwrap h2 {
+    margin-top: 30px;
+    color: white;
+    font-size: 50px;
+    
 }
 
 #headerwrap h3 {
-	color: white;
-	font-size: 30px;
+    color: white;
+    font-size: 40px;
 }
 
 #headerwrap h5 {
-	color: white;
-	font-weight: 700;
-	text-align: left;
+    color: white;
+    font-weight: 700;
+    text-align: left;
 }
 
 #headerwrap p {
-	text-align: left;
-	color: white
+    text-align: left;
+    color: white
 }
+
+/* Bodywrap color1 */
+
+#bodywrap1 {
+    background-color: #f4a13e;
+    padding-top: 50px;
+}
+
+/* Bodywrap color2 */
+
+#bodywrap2 {
+    background-color: #543e67;
+    padding-top: 50px;
+}
+
 
 /* intro Wrap */
-
-#intro {
-	padding-top: 50px;
-	border-top: #bdc3c7 solid 5px;
-}
 
 #features {
 	padding-top: 50px;
@@ -129,7 +156,7 @@ a:after {
 }
 
 #footerwrap {
-	background-color: #2f2f2f;
+	background-color: #527bbc;
 	color: white;
 	padding-top: 40px;
 	padding-bottom: 60px;
@@ -158,3 +185,14 @@ a:after {
 	color: white
 }
 
+.list-group.list-left-align {
+    text-align: left;
+}
+
+/*.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: white;
+}
+
+.navbar-nav-jlm ul li a {
+    color: white;
+}*/
