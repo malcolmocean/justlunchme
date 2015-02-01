@@ -5,6 +5,7 @@ var UserSchema = new mongoose.Schema({
   email: { type: String, required: true },
   fbusername: { type: String, required: true },
   friendList: [String],
+  friendsByEmail: [String],
   slots: [{
     ymd: { type: String, required: true},
     hour: { type: Number, required: true}

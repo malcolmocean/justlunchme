@@ -30,11 +30,22 @@ app.filter('listfilter', [function () {
   };
 }]);
 
-app.controller('UserPickerCtrl', function ($scope) {
+app.controller('UserPickerCtrl', function ($scope, $http) {
+  $scope.sendAddToServer = function (who, callback) {
+    $http.post('/add', who).success(callback);
+  }
   $scope.lunchList = [];
-  $scope.addFriend = function (ix) {
-    $scope.lunchList.push($scope.friends.splice(ix, 1)[0]);
+  $scope.addByClick = function (ix) {
+    if (ix > -1) {
+      $scope.lunchList.push($scope.friends.splice(ix, 1)[0]);
+    } else if ($scope.search.validemail) {
+      $scope.lunchList.push({email: $scope.search.text})
+      $scope.search = {};
+    }
     console.log("$scope.lunchList", $scope.lunchList);
+    $scope.sendAddToServer($scope.lunchList[$scope.lunchList.length-1], function (result) {
+      console.log("result", result);
+    })
   }
   $scope.searchKeypress = function ($event) {
     if ($event.charCode == KEYS.ENTER) {
@@ -55,6 +66,9 @@ app.controller('UserPickerCtrl', function ($scope) {
     }
   }
   $scope.friends = [
+    {
+      email: "Noah MacCallum <noahmacca@gmail.com>",
+    },
     {
       email: "Adam Euerby <aeuerby@gmail.com>",
     },

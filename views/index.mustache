@@ -11,13 +11,13 @@
             </div>
           </div>
         <ul class="friend-list" ng-class="{green: search.size === 1 || search.validemail}" ng-cloak>
-          <li ng-repeat="friend in friends | listfilter: search" ng-click="addFriend($index)">
+          <li ng-repeat="friend in friends | listfilter: search" ng-click="addByClick($index)">
           {[{friend.email}]}
           <span class="badge" style="float:right" ng-show="search.size === 1">
             <span class="glyphicon glyphicon-ok"></span>
           </span>
           </li>
-          <li ng-show="search.size == 0">
+          <li ng-show="search.size == 0" ng-click="addByClick()">
           {[{search.text}]}
           <span class="badge" style="float:right" ng-show="search.validemail">
             <span class="glyphicon glyphicon-ok"></span>

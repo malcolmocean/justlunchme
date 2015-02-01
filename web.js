@@ -157,31 +157,42 @@ app.get('/', function(req, res, next) {
 
   res.render('index', {
     title: 'JustLunch.me',
-    list: [
-      {name: "noah", program: "nano"},
-      {name: "will", program: "tron"},
-      {name: "malcolm", program: "syde"}
-    ],
     user: req.user,
   });
 });
 
-app.get('/sidebartest', function(req, res, next) {
-  console.log("req.url", req.url);
-
-  res.render('index', {
-    title: 'JustLunch.me',
-    list: [
-      {name: "noah", program: "nano"},
-      {name: "will", program: "tron"},
-      {name: "malcolm", program: "syde"}
-    ]
+function mGetUser (req, res, next) {
+  User.findOne({fbusername: 'malcolm.mcc'}, function (err, user) {
+    req.user = user;
+    next();
   });
+}
+
+app.post('/add', mGetUser, function (req, res) {
+  var rawEmail = req.body.email.match(/^[^<]*<?([^>]*)>?.*$/)[1];
+  User.findOne({email: rawEmail}, function (err, alreadyUser) {
+    if (err) {
+      res.send(500, err);
+    } else {
+      if (alreadyUser) {
+        res.send(alreadyUser)
+      } else {
+        // send email invite
+        res.send("inviting by email")
+      }
+      req.user.friendList.push(req.body.email)
+      req.user.save(function (err) {
+        res.send(err ? 500 : 200, err || "");
+      })
+      // res.send({status: "success"});
+    }
+  });
+  // var user = req.user
+  console.log("req.user", req.user);
+  res.send(req.user);
 });
 
-
-app.get('/account', ensureAuthenticated, function(req, res){
-  console.log('askdlfjalsdfkj');
+app.get('/account', ensureAuthenticated, function(req, res) {
   console.log(req.user);
   res.render('account', { user: req.user });
 });
@@ -202,7 +213,11 @@ app.get('/logout', function(req, res){
 });
 
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
+  if (req.isAuthenticated()) {
+    console.log("AUTHENTICATED");
+    return next();
+  }
+  console.log("MUST LOGIN");
   res.redirect('/login')
 }
 
