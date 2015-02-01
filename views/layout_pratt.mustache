@@ -19,7 +19,11 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
 
-    <script src="/js/jquery_pratt.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.min.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.min.css" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.print.css" />
     <script src="/js/smoothscroll_pratt.js"></script>
   </head>
 
@@ -213,7 +217,6 @@
 	    </div> <!--/ .container -->
 	</div><!--/ #introwrap -->
 
-<<<<<<< HEAD
 	<!-- FEATURES WRAP -->
 	<div id="features">
 		<div class="container">
@@ -291,41 +294,6 @@
 		</div><!--/ .container -->
 	</div><!--/ #features -->
 
-
-	<section id="showcase" name="showcase"></section>
-	<div id="showcase">
-		<div class="container">
-			<div class="row">
-				<h1 class="centered">Some Screenshots</h1>
-				<br>
-				<div class="col-lg-8 col-lg-offset-2">
-					<div id="carousel-example-generic" class="carousel slide">
-					  <!-- Indicators -->
-					  <ol class="carousel-indicators">
-					    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-					    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-					  </ol>
-
-					  <!-- Wrapper for slides -->
-					  <div class="carousel-inner">
-					    <div class="item active">
-					      <img src="/img/item-01.png" alt="">
-					    </div>
-					    <div class="item">
-					      <img src="/img/item-02.png" alt="">
-					    </div>
-					  </div>
-					</div>
-				</div>
-			</div>
-			<br>
-			<br>
-			<br>
-		</div><!-- /container -->
-	</div>
-=======
-
-
 <!-- Friends Section -->
 	<section id="friends" name="Friends"></section>
 	<div id="bodywrap1">
@@ -386,7 +354,8 @@
 					<br>
 	    		</div>
 	    		<div class="col-lg-12">
-	    			<img style="margin: auto" class="img-responsive" src="/img/calendar_placeholder.png" alt="">
+		    		<div id='calendar'></div>
+	    			{{! <img style="margin: auto" class="img-responsive" src="/img/calendar_placeholder.png" alt=""> }}
 	    		</div>
 	    		<br><br>
 	    	</div>
@@ -466,10 +435,59 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/angular-strap/2.0.0/angular-strap.tpl.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script src="/js/index.js"></script>
-	<script>
-	$('.carousel').carousel({
-	  interval: 3500
-	})
-	</script>
+    <script>
+    	$(function() {
+    		$('#calendar').fullCalendar({
+    			header: {
+    				left: 'prev,next today',
+    				center: 'title',
+    				right: 'month,agendaWeek,agendaDay'
+    			},
+    			defaultDate: '2014-11-12',
+    			selectable: true,
+    			selectHelper: true,
+    			select: function(start, end) {
+    				var title = prompt('Event Title:');
+    				var eventData;
+    				if (title) {
+    					eventData = {
+    						title: title,
+    						start: start,
+    						end: end
+    					};
+    					$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+    				}
+    				$('#calendar').fullCalendar('unselect');
+    			},
+    			editable: true,
+    			eventLimit: true, // allow "more" link when too many events
+    			events: [
+    				{
+    					title: 'All Day Event',
+    					start: '2014-11-01'
+    				},
+    				{
+    					title: 'Long Event',
+    					start: '2014-11-07',
+    					end: '2014-11-10'
+    				},
+    				{
+    					id: 999,
+    					title: 'Repeating Event',
+    					start: '2014-11-09T16:00:00'
+    				},
+    				{
+    					title: 'Birthday Party',
+    					start: '2014-11-13T07:00:00'
+    				},
+    				{
+    					title: 'Click for Google',
+    					url: 'http://google.com/',
+    					start: '2014-11-28'
+    				}
+    			]
+    		});
+    	});
+    </script>
   </body>
 </html>
