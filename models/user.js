@@ -27,23 +27,25 @@ UserSchema.virtual('bitslots').get(function () {
 
 mongoose.model('User', UserSchema);
 
-var time2bit = function (startTime, endTime) {
+var time2bit = function time2bit(startTime, endTime) {
   var hour = 10;
   var minute = '00';
   var bitMask = 0;
   var avail = false;
-  for (i=0; i<20; i++){
+  for (i=0; i<16; i++){
     if (i%2 == 0) {
       minute = '00';
     } else {
       minute = '30';
     }
-    hour = hour +i;
-    time = hour + minute;
+
+    hour = Math.floor(i/2) + 10;
+    time = hour + ":" + minute;
 
     if (time == startTime) {
       avail = true;
     }
+
     if (time == endTime) {
       return bitMask;
     }
@@ -53,6 +55,7 @@ var time2bit = function (startTime, endTime) {
   }
   return bitMask;
 }
+
 module.exports = {
   time2bit: time2bit
 };

@@ -53,6 +53,31 @@ var emailNonUser = function (email, inviterName) {
     to: email,
     subject: inviterName + " wants to go for lunch with you :)",
     html: "Hi,",
+    html: "Hello<!--name-->!" +
+      "Your friend " + inviterName + " has kindly expressed an interest in catching up with you over lunch. " +
+      "We’re JustLunchMe, a helpful new webapp from the University of Waterloo, and we’d like to help. All we need is 60 seconds of your time, and we’ll let you know when you’ve both got a free slot to have lunch. Plus, as you add friends we will recommend you lunch meetings whenever you’re available. " +
+      "Just go to <a href='http://www.justlunch.me'>JustLunch.me</a> - hope to see you there!"
+      "<p>Sincerely,<br>" +
+      "The JustLunch.me team</p>"
+    headers: {},
+    callback: function(errm) {
+      res.send({err: errm, result: !errm && "success"});
+    }
+  });
+}
+
+var emailExistingUser = function (email, inviterName) {
+  mg.checkAndSendHtml({
+    from: "JustLunch.Me <hi@justlunch.me>",
+    to: email,
+    subject: inviterName + " wants to go for lunch with you :)",
+    html: "Hi,",
+    html: "Hello<!--name-->!" +
+      "Your friend " + inviterName + " has kindly expressed an interest in catching up with you over lunch. " +
+      "We’re JustLunchMe, a helpful new webapp from the University of Waterloo, and we’d like to help. All we need is 60 seconds of your time, and we’ll let you know when you’ve both got a free slot to have lunch. Plus, as you add friends we will recommend you lunch meetings whenever you’re available. " +
+      "Just go to <a href='http://www.justlunch.me'>JustLunch.me</a> - hope to see you there!"
+      "<p>Sincerely,<br>" +
+      "The JustLunch.me team</p>"
     headers: {},
     callback: function(errm) {
       res.send({err: errm, result: !errm && "success"});
@@ -190,9 +215,9 @@ app.post('/:email/add', function (req, res) {
         res.send(500, err);
       } else {
         if (alreadyUser) {
-          // res.send(alreadyUser)
+          emailExistingUser(email, user.name);
         } else {
-          // res.send("inviting by email");
+          emailNonUser(email, user.name);
         }
         // user.lunchList = [];
         user.slots = [];
@@ -402,20 +427,24 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-function matchTimeSlots(slotA, slotB) {
+function matchTimeSlots(slotsA, slotsB) {
+  for (i=0; i<slotsA.length; i++) {
+    for (j=0; j<slotsB.length; j++) {
+      var isMatch = matchTimeSlot(slotsA[i], slotsB[j]);
+      if (isMatch) {
+        return true;
+      }
+    }
+  }
+}
 
-  if (!(slotA.startTime && slotB.startTime)) {
+function matchTimeSlot(slotA, slotB){
+  if (!(slotA.start && slotB.end)) {
     return false;
   }
-  if (slotA.startTime.substring(0, 10) != slotB.startTime.substring(0, 10)) {
+  if (slotA.start.substring(0, 10) != slotB.end.substring(0, 10)) {
     return false;
   }
-
-  bitA = time2bit(slotA.startTime, slotA.endTime);
-  bitB = time2bit(slotB.startTime, slotB.endTime);
-
-  bitMask = bitA & bitB;
-  bitString = bitMask.toString(2);
 
   return true;
 }
@@ -448,7 +477,6 @@ function matchingService(req, res) {
 
       // User.find({email: {$in: okayEmails}, lunchList.email: user.email}, function (err, docs) {
       User.find({email: {$in: okayEmails}}, function (err, friends) {
-        res.send(user);
         user.friends = friends;
         var mutual_avail_friends = [];
         for (i=0; i<friends.length; i++) {
@@ -461,6 +489,7 @@ function matchingService(req, res) {
         next();
       });
     }, function (err) {
+      var matches = {A: [], B: []};
 
       for (i=0; i<users.length; i++) {
         if (!users[i].isMatched) {
@@ -475,10 +504,16 @@ function matchingService(req, res) {
               var result  = users.filter(function(o){return o.email == friend.email;} );
               result.isMatched = true;
               result.partnerEmail = users[i].email;
+
+              matches.A.push(users[i]);
+              matches.B.push(friend);
             }
           }
         }
       }
+      res.send(matches);
+
+
     });
   });
 }
