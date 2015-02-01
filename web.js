@@ -24,43 +24,35 @@ db.once('open', function callback () {
   console.log("DB connection open");
 });
 
-app.get('/textslots', function (req, res) {
+// urlsList = [];
+// urlsList.push({url: '/users', callback: function })
+
+app.get('/httpdemo', function (req, res) {
+  res.send({
+    request: req,
+    response: res
+  })
+})
+
+app.get('/users', function (req, res) {
   User.find({}, function (err, users) {
-    async.each(users, function (user, callback) {
-      user.textslots = [];
-      for (var i = 0; i < user.slots.length; i++) {
-        user.textslots.push(user.slots[i].ymd+"@"+user.slots[i].hour);
-      }
-      user.save(callback)
-    }, function (err) {
-      res.send(err || users);
-    });
+    if (users.length == 0) {
+      res.send ("nope");
+    } else {
+      res.send (users);
+    }
   });
 });
 
 app.get('/userme', function (req, res) {
-  User.findOne({name: "Malcolm Ocean"}, function (err, user) {
-    user.friendList = [
-      'noah.maccallum'
-    ],
-    user.slots = [{
-      ymd: '2015-02-01',
-      hour: 13
-    }, {
-      ymd: '2015-02-01',
-      hour: 14
-    }];
-    user.save(function (err) {
-      res.send(err || user);
-    });
-  });
+  res.send("hi")
 });
 
 app.get('/matchfor/:fbusername', function (req, res) {
   User.findOne({fbusername: req.params.fbusername}, function (err, user) {
     User.findOne({
       fbusername: {$in: user.friendList},
-      textslots: {$in: },
+      // textslots: {$in: },
       friendList: user.fbusername
     }, function (err2, matchuser) {
       res.send({
@@ -74,7 +66,7 @@ app.get('/matchfor/:fbusername', function (req, res) {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'mustache');
-app.set('layout', 'layout');
+app.set('layout', 'layout1');
 // app.enable('view cache');
 app.engine('mustache', require('hogan-express'))
 
@@ -109,9 +101,23 @@ app.get('/', function(req, res, next) {
   });
 });
 
+app.get('/sidebartest', function(req, res, next) {
+  console.log("req.url", req.url);
+
+  res.render('index', {
+    title: 'JustLunch.me',
+    list: [
+      {name: "noah", program: "nano"},
+      {name: "will", program: "tron"},
+      {name: "malcolm", program: "syde"}
+    ]
+  });
+});
+
 
 app.get('/anotherpage', function(req, res, next) {
   res.render('other');
+  // next();
 });
 
 // catch 404 and forward to error handler
