@@ -46,14 +46,80 @@
 	          </ul>
 
 	          <div style="float: right; position: relative; margin-top: 10px; margin-bottom: -10px;">
+
+	          <script class="pre" src="/hello.min.js"></script>
+
+				<script class="pre">
+				hello.init( {
+						google : '791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com',
+						facebook : '871627882901365',
+					}
+					, {
+						redirect_uri:'redirect.html', 
+						scope:"friends"
+					}
+				);
+
+				function getFriends(network, path, redirect_uri) {
+					hello.login( network, {scope:'friends', redirect_uri: redirect_uri}, function(auth){
+						if(!auth||auth.error){
+							console.log("Signin aborted");
+							return;
+						}
+						// Get the friends
+						// using path, me/friends or me/contacts
+						hello( network ).api(path , {limit:90}, function responseHandler(r){
+								console.log(r);
+							}
+						);
+					});
+				}
+
+				// hello.on('auth.login', function(auth){
+				//     // call user information, for the given network
+				//     hello( auth.network ).api( '/me/contacts' ).then( function(r){
+				//         console.log(r);
+				//     });
+
+				// 	hello( auth.network ).api( '/me/friends').then( function(r){
+				//         console.log(r);
+				//     });
+				// });
+
+
+				</script>
+
+
+
+
+	          <button onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Get Google me/friends</button>
+	          <button onclick="getFriends('facebook', 'me/friends', '/')">Get facebook me/friends</button>
+
+	          <button onclick="hello( 'facebook' ).login()">windows</button>
+
+<!-- 
+
 	          	{{user.displayName}}
 				<script src="https://apis.google.com/js/client:platform.js" async defer></script>
 
 				<script>
 				function signInCallback(authResult) {
+					console.log(authResult);
 				  if (authResult.code) {
 				    $.post('/auth/google/callback', { code: authResult.code})
 				    .done(function(data) {
+				    	console.log(data);
+
+				    	gapi.client.load('plus','v1', function(){
+						 var request = gapi.client.plus.people.list({
+						   'userId': 'me',
+						   'collection': 'visible'
+						 });
+						 request.execute(function(resp) {
+						   console.log(resp);
+						 });
+						});
+
 				      $('#signinButton').hide();
 				    }); 
 				  } else if (authResult.error) {
@@ -72,7 +138,7 @@
 				    data-callback="signInCallback">
 				  </span>
 				</div>
-				<div id="result"></div>
+				<div id="result"></div> -->
 	          </div>
 	        </div><!--/.nav-collapse -->
 	      </div>
@@ -290,6 +356,7 @@
 		</div>
 	</div>
 
+	
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
