@@ -47,10 +47,7 @@ app.get('/emailuser/:email', function (req, res) {
   });
 });
 
-<<<<<<< HEAD
 
-=======
->>>>>>> af48f20dd7619b7ace5f2eb1bf8997d146702b88
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
 //   serialize users into and deserialize users out of the session.  Typically,
@@ -387,7 +384,7 @@ function matchingService(req, res) {
 
       // User.find({email: {$in: okayEmails}, lunchList.email: user.email}, function (err, docs) {
       User.find({email: {$in: okayEmails}}, function (err, friends) {
-        res.send(user.friends);
+        //res.send('kalsdfjlkadsf' + user.friends);
         user.friends = friends;
         var mutual_avail_friends = [];
         for (i=0; i<friends.length; i++) {
