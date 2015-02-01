@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 </head>
 <body>
+  <tp>test1</p>
 <script>
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -44,7 +45,7 @@
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.2' // use version 2.1
+    version    : 'v2.1' // use version 2.1
   });
 
   // Now that we've initialized the JavaScript SDK, we call 
@@ -66,13 +67,13 @@
   };
 
   // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
@@ -84,6 +85,23 @@
         'Thanks for logging in, ' + response.name + '!';
     });
   }
+
+[FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+  if (!error) {
+    // Success! Include your code to handle the results here
+    NSLog(@"user info: %@", result);
+  } else {
+    // An error occurred, we need to handle the error
+    // See: https://developers.facebook.com/docs/ios/errors   
+  }
+}];
+
+FB.ui(
+ {
+  method: 'share',
+  href: 'https://developers.facebook.com/docs/'
+}, function(response){});
+
 </script>
 
 <!--
@@ -95,8 +113,16 @@
 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
 </fb:login-button>
 
+<div
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
+</div>
+
 <div id="status">
 </div>
+
 
 </body>
 </html>
