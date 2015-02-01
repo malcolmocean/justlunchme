@@ -215,7 +215,16 @@ app.post('/:email/add', function (req, res) {
         res.send(500, err);
       } else {
         if (alreadyUser) {
-          emailExistingUser(email, user.name);
+          var hasCurrentUser = false;
+          for (var i = 0; i < alreadyUser.lunchList.length; i++) {
+            if (alreadyUser.lunchList[i].email == user.email) {
+              hasCurrentUser = true;
+              break;
+            }
+          }
+          if (!hasCurrentUser) {
+            emailExistingUser(email, user.name);
+          }
         } else {
           emailNonUser(email, user.name);
         }
