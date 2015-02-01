@@ -92,6 +92,7 @@
 						// Get the friends
 						// using path, me/friends or me/contacts
 						hello( network ).api(path , {limit:10000}, function responseHandler(r){
+								console.log('eiwerwe');
 								console.log(r);
 								listCallback(r.data)
 							}

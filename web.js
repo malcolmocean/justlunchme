@@ -76,21 +76,6 @@ app.get('/emailuser/:fbusername', function (req, res) {
   });
 });
 
-app.get('/matchfor/:fbusername', function (req, res) {
-  User.findOne({fbusername: req.params.fbusername}, function (err, user) {
-    User.findOne({
-      fbusername: {$in: user.friendList},
-      // textslots: {$in: },
-      friendList: user.fbusername
-    }, function (err2, matchuser) {
-      res.send({
-        user: user,
-        matchuser: matchuser,
-      })
-    })
-  });
-});
-
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -236,6 +221,8 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
+app.get('/match', matchingService);
+
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     console.log("AUTHENTICATED");
@@ -359,6 +346,72 @@ function onListening() {
   : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+function matchTimeSlots(slotA, slotB) {
+  return true;
+}
+
+
+
+
+function matchingService(req, res) {
+    
+  // Need a MongoDB query similar to the following SQL Query:
+  // Todays_Candidates = SELECT (
+  //   string ID,
+  //   string Name,
+  //   array Availability_Vector,
+  //   bool Avail_today,
+  //   float Duration_Available,
+  //   bool isMatched,
+  //   string PartnerId )
+  // Where Avail_today == True 
+  // ORDER BY Duration_Available, #of Lunch List ASC;
+  // The candidates with the least availability occur at the top of the list and will get matched first.
+
+  User.find({}, function (err, users) {
+    
+    async.each(users, function (user, next) {
+      var okayEmails = [];
+      for (var i=0;i<user.lunchList.length; i++) {
+        okayEmails.push(user.lunchList[i].email)
+      }
+      user.isMatched = false;
+
+      // User.find({email: {$in: okayEmails}, lunchList.email: user.email}, function (err, docs) {
+      User.find({email: {$in: okayEmails}}, function (err, friends) {
+        res.send(user.friends);
+        user.friends = friends;
+        var mutual_avail_friends = [];
+        for (i=0; i<friends.length; i++) {
+          if (matchTimeSlots(user.slots, friends[i].slots)) {
+            mutual_avail_friends.push(friends[i]);
+          }
+        }
+        user.mutual_avail_friends = mutual_avail_friends;
+
+        next();
+      });
+    }, function (err) {
+      for (i=0; i<users.length; i++) {
+        if (!users[i].isMatched) {
+          for (j=0; j<users[i].mutual_avail_friends.length; j++) {
+            friend = users[i].mutual_avail_friends[j];
+            if (!friend.isMatched) {
+              users[i].isMatched = true;
+              users[i].partnerEmail = friend.email;
+
+              var result  = users.filter(function(o){return o.email == friend.email;} );
+              result.isMatched = true;
+              result.partnerEmail = users[i].email;
+            }
+          }
+        }
+      }
+    });
+  });
+}
+
 
 
 console.log("started Successfully");
