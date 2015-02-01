@@ -1,0 +1,13 @@
+.friend-list {
+  list-style: none;
+  border-bottom: 1px solid #ccd;
+}
+
+.friend-list li {
+  padding: 6px 12px;
+  border-top: 1px solid #ccd;
+}
+
+.hasapp {
+  background: #ddffe5;
+}

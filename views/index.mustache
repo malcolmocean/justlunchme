@@ -1,15 +1,26 @@
-
-
-<h1>{{ title }}</h1>
-<p>Welcome to {{ title }}</p>
-<ul>
-{{#list}}
-  <li>{{name}} - {{program}}</li>
-{{/list}}
-</ul>
-
-<div class="btn-group" role="group" aria-label="...">
-  <button type="button" class="btn btn-default">Left</button>
-  <button type="button" class="btn btn-default">Middle</button>
-  <button type="button" class="btn btn-default">Right</button>
+<div class="container-fluid" ng-controller="UserPickerCtrl">
+  <div class="row">
+    <h1>{{ title }}</h1>
+    <div class="col-md-6">
+      <ul class="friend-list" ng-cloak>
+        <li ng-repeat="friend in friends" ng-class="{hasapp: friend.hasApp}">
+        {[{friend.email}]}
+        <span class="badge" style="float:right" ng-show="friend.hasApp">
+          <span class="glyphicon glyphicon-ok"></span>
+        </span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <ul class="friend-list" ng-cloak>
+        <li ng-repeat="friend in friends" ng-class="{hasapp: friend.hasApp}">
+        {[{friend.email}]}
+        <span class="badge" style="float:right" ng-show="friend.hasApp">
+          <span class="glyphicon glyphicon-ok"></span>
+        </span>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
+<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
