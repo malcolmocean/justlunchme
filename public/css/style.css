@@ -69,16 +69,22 @@
 }
 
 .lunch-list .remove-friend {
-  color: red;
+  color: #c03f29;
   float: right;
   display: none;
   background: none;
   border: 0;
   margin-right: -6px;
+  border-radius: 10px;
 }
 
 .lunch-list a:hover .remove-friend {
   display: inline-block;
+}
+
+.lunch-list .remove-friend:hover {
+  color: white;
+  background-color: #c03f29;
 }
 
 .hasapp {

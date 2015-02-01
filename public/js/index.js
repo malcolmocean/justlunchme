@@ -37,7 +37,7 @@ app.filter('searchfilter', [function () {
 
 app.controller('UserPickerCtrl', function ($scope, $http) {
   $scope.sendAddToServer = function (who, callback) {
-    $http.post('/add', who).success(callback);
+    $http.post('/'+user.email+'/add', who).success(callback);
   }
   $scope.lunchList = [];
   $scope.addByClick = function (friend) {
@@ -66,14 +66,15 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
         $scope.search = {};
       } else if ($scope.search.validemail) {
         $scope.lunchList.push({email: $scope.search.text, ix: $scope.lunchList.length});
-        // TODO send email, have ajax track status of that invite
+        // TODO send email
         $scope.search = {};
+      } else {
+        return; // so you don't send add // TODO fix hack
       }
+      $scope.sendAddToServer($scope.lunchList[$scope.lunchList.length-1], function (result) {
+        console.log("result", result);
+      })
     }
-  }
-
-  var user = {
-    email: "malcolm.m.ocean@gmail.com"
   }
 
   var lunchMap = {};
@@ -96,22 +97,21 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
         $scope.friends.push(friend);
       }
     });
-    // $scope.friends = list;
-    console.log("$scope.friends[1]", $scope.friends[1]);
     $scope.$apply();
-
-    console.log("JSON.stringify($scope.friends).length", JSON.stringify($scope.friends).length);
-
-    $http.post('/'+user.email+'/contactsInMemory', $scope.friends);
   }
-  $(function () {
-    $http.get('/'+user.email+'/contactsInMemory').success(function (friends) {
-      console.log("contactsInMemory", friends);
-      if (!$scope.friends) {
-        $scope.friends = friends;
+
+  authCallback = function (user) {
+    $http.get('/'+user.email+'/lunchList').success(function (list) {
+      if ($scope.lunchList && $scope.lunchList.length) {
+        $scope.lunchList = $scope.lunchList.concat(list);
+      } else {
+        $scope.lunchList = list;
+      }
+      for (var i=0; i<$scope.lunchList.length; i++) {
+        lunchMap[$scope.lunchList[i].email] = true;
       }
     });
-  });
+  }
 
   $scope.removeFromList = function (person) {
     person.deleting = true; // TODO use for spinner
@@ -122,22 +122,6 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
           break;
         }
       }
-      // console.log("==========================================");
-      // console.log("==========================================");
-      // console.log("THIS NEEDS TO ACTUALLY LOOK THROUGH THINGS");
-      // console.log("==========================================");
-      // console.log("==========================================");
     });
   }
-
-  $http.get('/'+user.email+'/lunchList').success(function (list) {
-    if ($scope.lunchList && $scope.lunchList.length) {
-      $scope.lunchList = $scope.lunchList.concat(list);
-    } else {
-      $scope.lunchList = list;
-    }
-    for (var i=0; i<$scope.lunchList.length; i++) {
-      lunchMap[$scope.lunchList[i].email] = true;
-    }
-  });
 });

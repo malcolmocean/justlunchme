@@ -1,309 +1,263 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="justlunchme">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pratt - Free Bootstrap 3 Theme">
-    <meta name="author" content="Alvarez.is - BlackTie.co">
-    <link rel="shortcut icon" href="/ico/favicon.png">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pratt - Free Bootstrap 3 Theme">
+  <meta name="author" content="Alvarez.is - BlackTie.co">
+  <link rel="shortcut icon" href="/ico/favicon.png">
 
-    <title>JustLunchMe</title>
+  <title>JustLunchMe</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/css/bootstrap_pratt.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="/css/bootstrap_pratt.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/0.4.1/sweet-alert.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="/css/main_pratt.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="/css/main_pratt.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
 
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.min.js"></script>
-    <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.min.css" />
-    <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.print.css" />
-    <script src="/js/smoothscroll_pratt.js"></script>
-
-
-    <style>
-		body {
-			margin: 40px 10px;
-			padding: 0;
-			font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-			font-size: 14px;
-		}
-
-		#calendar {
-			max-width: 900px;
-			margin: 0 auto;
-		}
-	</style>
-
-  </head>
-
-  <body data-spy="scroll" data-offset="0" data-target="#navigation">
-
-    <!-- Fixed navbar -->
-	    <div id="navigation" class="navbar navbar-default navbar-fixed-top">
-	      <div class="container">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          <a class="navbar-brand" href="#"><b>JustLunchMe</b></a>
-	        </div>
-	        <div class="navbar-collapse collapse">
-	          <ul class="nav navbar-nav navbar-nav-jlm">
-	            <li class="active"><a href="#home" class="smothscroll">Home</a></li>
-	            <li><a href="#intro" class="smothscroll">Intro</a></li>
-	            <li><a href="#friends" class="smothScroll">Friends</a></li>
-	            <li><a href="#times" class="smothscroll">Scheduling</a></li>
-	          </ul>
-
-	          <div style="float: right; position: relative; margin-top: 10px; margin-bottom: -10px;">
-
-	          <script class="pre" src="/hello.min.js"></script>
-
-	          <script src="https://apis.google.com/js/client:platform.js" async defer></script>
-
-				<script class="pre">
-				hello.init( {
-						google : '791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com',
-						facebook : '871627882901365',
-					}
-					, {
-						redirect_uri:'oauth2callback',
-						scope: ["friends", "email"]
-					}
-				);
-
-				var listCallback = function () {};
-
-				function getFriends(network, path, redirect_uri) {
-					hello.login( network, {scope:['email', 'friends'], redirect_uri: redirect_uri}, function(auth){
-						if(!auth||auth.error){
-							console.log("Signin aborted");
-							return;
-						}
-						// Get the friends
-						// using path, me/friends or me/contacts
-						hello( network ).api(path , {limit:10000}, function responseHandler(r){
-								console.log('hello!', r);
-								listCallback(r.data);
-							}
-						);
-					});
-				}
-
-				hello.on('auth.login', function(auth){
-					console.log('login success');
-
-				    // call user information, for the given network
-				    hello( auth.network ).api('/me' , function(r){
-						console.log('this user with email');
-						console.log(r);
-					});
-
-					hello( auth.network ).api( '/me/friends', {limit:100}, function(r){
-						console.log('google plus friends');
-				        console.log(r);
-				    });
-
-				    hello( auth.network ).api( '/me/contacts', {limit:5000}, function(r){
-				    	console.log('google contacts');
-				        console.log(r);
-				    });
-				});
+  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.min.js"></script>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.min.css" />
+  <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.6/fullcalendar.print.css" />
+  <script src="/js/smoothscroll_pratt.js"></script>
 
 
-				</script>
+  <style>
+    #calendar {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+  </style>
 
-	          {{! <button onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Get Google me/friends</button>
-	          <button onclick="getFriends('facebook', 'me/friends', '/')">Get facebook me/friends</button> }}
+</head>
 
-<!-- 
+<body data-spy="scroll" data-offset="0" data-target="#navigation">
 
-	          	{{user.displayName}}
-				
+  <!-- Fixed navbar -->
+  <div id="navigation" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#"><b>JustLunchMe</b></a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-nav-jlm">
+          <li class="active"><a href="#home" class="smothscroll">Home</a></li>
+          <li><a href="#intro" class="smothscroll">Intro</a></li>
+          <li><a href="#friends" class="smothScroll">Friends</a></li>
+          <li><a href="#times" class="smothscroll">Scheduling</a></li>
+        </ul>
 
-				<script>
-				function signInCallback(authResult) {
-					//console.log(authResult);
-				  if (authResult.code) {
-				    $.post('/auth/google/callback', { code: authResult.code})
-				    .done(function(data) {
-				    	console.log('done auth callback');
-				    	console.log(data);
+        <div style="float: right; position: relative; margin-top: 10px; margin-bottom: -10px;">
 
-				      $('#signinButton').hide();
+          <script class="pre" src="/hello.min.js"></script>
 
+          <script src="https://apis.google.com/js/client:platform.js" async defer></script>
 
-				      gapi.client.load('oauth2', 'v2', function() {
-						  gapi.client.oauth2.userinfo.get().execute(function(resp) {
-						    // Shows user email
-						    console.log(resp.email);
-						  })
-						});
+          <script class="pre">
+          var user = {};
+            hello.init( {
+              google : '791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com',
+              facebook : '871627882901365',
+            }
+            , {
+              redirect_uri:'oauth2callback',
+              scope: ["friends", "email"]
+            }
+            );
 
-				    });
-				  } else if (authResult.error) {
-				    console.log('There was an error: ' + authResult.error);
-				  }
-				};
-				</script> 
+            var listCallback = function () {};
+            var authCallback = function () {};
 
-		  		<div id="signinButton" style="display:none;">
-				  <span class="g-signin"
-				    data-scope="https://www.googleapis.com/auth/plus.login"
-				    data-clientid="791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com"
-				    data-redirecturi="postmessage"
-				    data-accesstype="offline"
-				    data-cookiepolicy="single_host_origin"
-				    data-callback="signInCallback">
-				  </span>
-				</div> -->
-				<div id="result"></div> 
-	          </div>
-	        </div><!--/.nav-collapse -->
-	      </div>
-	    </div>
+            function getFriends(network, path, redirect_uri) {
+              hello.login(network, {scope: ['email', 'friends'], redirect_uri: redirect_uri}, function(auth) {
+                if (!auth || auth.error) {
+                  console.log("Signin aborted");
+                  return;
+                }
+                // Get the friends
+                // using path, me/friends or me/contacts
+                // hello( network ).api(path , {limit:10000}, function responseHandler(r) {
+                //   console.log('hello!', r);
+                // });
+
+              $('html, body').animate({
+                scrollTop: $("#friends").offset().top
+              }, 2000);
+              });
+            }
+
+            hello.on('auth.login', function (auth) {
+              console.log('login success');
+
+              // call user information, for the given network
+              hello( auth.network ).api('/me' , function (r) {
+                $.post('userJustAuthed', r, function (result) {
+                  // console.log("result", result);
+                });
+                authCallback(r); // TODO TEST THIS
+                user.email = r.email;
+                console.log('this user with email', r);
+              });
+
+              // hello( auth.network ).api( '/me/friends', {limit:100}, function (r) {
+              //   console.log('google plus friends');
+              //   console.log(r);
+              // });
+
+              hello( auth.network ).api( '/me/contacts', {limit:5000}, function (r) {
+                console.log('google contacts', r);
+                listCallback(r.data);
+              });
+            });
+          </script>
+        {{! <div id="result"></div> }}
+      </div>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
 
 <div class="row">
 
-<!-- Home Section -->
-	<section id="home" name="Welcome"></section>
-	<div id="headerwrap">
-	    <div class="container">
-	    	<div class="row centered">
-	    		<div class="col-lg-12">
-					<br><br><br><br>
-					<h1>Welcome To <b>JustLunchMe</b></h1>
-					<h3>Reunite with friends. It's like real life Skype.</h3>
-					<br>
-	    		</div>
-	    		<div class="col-lg-12">
-	    			{{! <div style="height:300px"></div> }}
-	    			{{! <img  style="margin: auto" class="img-responsive" src="/img/women_lunch1.jpg" alt=""> }}
-	    			<br><br>
-	    		</div>
-	    		<div class="col-lg-12">
-					  <button type="button" class="btn btn-login btn-large" onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Login</button>
-	    		</div>
+  <!-- Home Section -->
+  <section id="home" name="Welcome"></section>
+  <div id="headerwrap">
+    <div class="container">
+      <div class="row centered">
+        <div class="col-lg-12">
+          <br><br><br><br>
+          <h1>Welcome To <b>JustLunchMe</b></h1>
+          <h3>Reunite with friends. It's like real life Hangouts.</h3>
+          <br>
+        </div>
+        <div class="col-lg-12">
+          {{! <div style="height:300px"></div> }}
+          {{! <img  style="margin: auto" class="img-responsive" src="/img/women_lunch1.jpg" alt=""> }}
+          <br><br>
+        </div>
+        <div class="col-lg-12">
+          <button type="button" class="btn btn-login btn-large" onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Login</button>
+        </div>
 
 
-	    	</div>
-	    </div> <!--/ .container -->
-	</div><!--/ #headerwrap -->
+      </div>
+    </div> <!--/ .container -->
+  </div><!--/ #headerwrap -->
 
 
-<div style="background: #662108; color: black">
+  <div style="background: #662108; color: black">
 
-</div>
+  </div>
 
-<!-- Intro Section -->
-	<section id="intro" name="intro"></section>
-	<!-- INTRO WRAP -->
-	<div id="bodywrap2">
-		<div class="container">
-			<div class="row centered">
-				<h1>Effortless Lunch Scheduling</h1>
-				<br>
-				<br>
-				<div class="col-lg-4">
-					<img src="/img/Smiley_2.png" alt="">
-					<h3>Add Friends</h3>
-					<p>Quickly add anyone via email or your Google contacts list, and we'll take care of the rest. </p>
-				</div>
-				<div class="col-lg-4">
-					<img src="/img/intro02.png" alt="">
-					<h3>Fill in Availability</h3>
-					<p>Click and drag our simple weekly calendar to tell us your free lunch slots.</p>
-				</div>
-				<div class="col-lg-4">
-					<img style="margin:23.5px 0;" src="/img/email_icon.png" alt="">
-					<h3>Get Matched</h3>
-					<p>Sit tight and wait for your friends to things on their side, we'll ping you if you have a match! </p>
-				</div>
-			</div>
-	    </div> <!--/ .container -->
-	    <br>
-	</div><!--/ #introwrap -->
-	<!-- Friends Section -->
+  <!-- Intro Section -->
+  <section id="intro" name="intro"></section>
+  <!-- INTRO WRAP -->
+  <div id="bodywrap2">
+    <div class="container">
+      <div class="row centered">
+        <h1>Effortless Lunch Scheduling</h1>
+        <br>
+        <br>
+        <div class="col-lg-4">
+          <img src="/img/Smiley_2.png" alt="">
+          <h3>Add Friends</h3>
+          <p>Quickly add anyone via email or your Google contacts list, and we'll take care of the rest. </p>
+        </div>
+        <div class="col-lg-4">
+          <img src="/img/intro02.png" alt="">
+          <h3>Fill in Availability</h3>
+          <p>Click and drag our simple weekly calendar to tell us your free lunch slots.</p>
+        </div>
+        <div class="col-lg-4">
+          <img style="margin:23.5px 0;" src="/img/email_icon.png" alt="">
+          <h3>Get Matched</h3>
+          <p>Sit tight and wait for your friends to do their thing, and we'll ping you if you have a match! </p>
+        </div>
+      </div>
+    </div> <!--/ .container -->
+    <br>
+  </div><!--/ #introwrap -->
+  <!-- Friends Section -->
 
-	<section id="friends" name="Friends"></section>
-	<div id="bodywrap1">
+  <section id="friends" name="Friends"></section>
+  <div id="bodywrap1">
 
-	    <div class="container">
-	    	<div class="row centered">
-	    		<div class="col-lg-12">
-					{{! <h1>Friend List</h1> }}
-					<h1>Who do you want to have lunch with?</h1>
-					<br>
-	    		</div>
-    		</div>
-			{{{yield}}}
-    		<div class="row centered" style="display: none">
-	    		<div class="col-lg-6">
-	    			<h2>Notifications</h2>
-						<div class="list-group list-left-align">
-						     <a href="#" class="list-group-item"><span class="badge">Add</span>     <span class="badge">Ignore</span> Person 1
-						  </a>
-						  <a href="#" class="list-group-item">Person 2</a>
-						</div>
-	    		</div>
-	    	</div>
-	    </div> <!--/ .container -->
-	</div><!--/ #headerwrap -->
+    <div class="container">
+      <div class="row centered">
+        <div class="col-lg-12">
+          <h1>Who do you want to have lunch with?</h1>
+          <br>
+        </div>
+      </div>
+      {{{yield}}}
+      <div class="row centered" style="display: none">
+        <div class="col-lg-6">
+          <h2>Notifications</h2>
+          <div class="list-group list-left-align">
+           <a href="#" class="list-group-item"><span class="badge">Add</span>     <span class="badge">Ignore</span> Person 1
+           </a>
+           <a href="#" class="list-group-item">Person 2</a>
+         </div>
+       </div>
+     </div>
+   </div> <!--/ .container -->
+ </div><!--/ #headerwrap -->
 
 
-<!-- Calendar Section -->
-	<section id="times" name="Times"></section>
-	<div id="bodywrap2">
-	    <div class="container">
-	    	<div class="row centered">
-	    		<div class="col-lg-12">
-					<h1>Your Availability</h1>
-					<h3>Click and drag directly on the calendar anytime you're free.</h3>
-					<br>
-	    		</div>
-	    		<div class="col-lg-12">
-		    		<div id='calendar'></div>
-	    			{{! <img style="margin: auto" class="img-responsive" src="/img/calendar_placeholder.png" alt=""> }}
-	    		</div>
-	    		<div class="col-lg-12">
-					<h4>Please choose at least a 1 hour time slot. We'll try to match you as late as possible in your selected time slot.</h4>
-	    		</div>
-	    		<br>
-	    	</div>
-	    </div> <!--/ .container -->
-	    <br>
-	</div><!--/ #headerwrap -->
+ <!-- Calendar Section -->
+ <section id="times" name="Times"></section>
+ <div id="bodywrap2">
+  <div class="container">
+    <div class="row centered">
+      <div class="col-lg-12">
+        <h1>Your Availability</h1>
+        <h3>Click and drag directly on the calendar anytime you're free.</h3>
+        <br>
+      </div>
+      <div class="col-lg-12">
+        <div id='calendar'></div>
+        {{! <img style="margin: auto" class="img-responsive" src="/img/calendar_placeholder.png" alt=""> }}
+      </div>
+      <div class="col-lg-12">
+        <h4>Please choose at least a 1 hour time slot. We'll try to match you as late as possible in your selected time slot.</h4>
+      </div>
+      <br>
+    </div>
+  </div> <!--/ .container -->
+  <br>
+</div><!--/ #headerwrap -->
 
 <!-- Thank you Section -->
-	<section id="times" name="Times"></section>
-	<div id="bodywrap1">
-	    <div class="container">
-	    	<div class="row centered">
-	    		<div class="col-lg-12">
-					<h1>That's it!</h1>
-					<h3>Check your email every day at 10 AM to see if you've been matched!</h3>
-					<br><br>
-	    		</div>
-	    	</div>
-	    </div> <!--/ .container -->
-	</div><!--/ #headerwrap -->
+<section id="times" name="Times"></section>
+<div id="bodywrap1">
+  <div class="container">
+    <div class="row centered">
+      <div class="col-lg-12">
+        <h1>That's it!</h1>
+        <h3>Check your email every day at 10 AM to see if you've been matched!</h3>
+        <br><br>
+      </div>
+    </div>
+  </div> <!--/ .container -->
+</div><!--/ #headerwrap -->
 
 <!-- Contact Section -->
-	<section id="contact" name="contact"></section>
-	<div id="c">
-		<div class="container">
-			<p>Created by <a href="http://www.malcolmocean.com">Malcolm Ocean</a>, Will Cullen and <a href="https://ca.linkedin.com/pub/noah-maccallum/31/949/227">Noah MacCallum</a> at the University of Waterloo for the Winter 2015 <a href=http://www.kik.com/>Kik Hackathon.</a> All code is open source and available on Github.</p>
-		</div>
-	</div>
+<section id="contact" name="contact"></section>
+<div id="c">
+  <div class="container">
+    <p>Created by <a href="http://www.malcolmocean.com">Malcolm Ocean</a>, Will Cullen and <a href="https://ca.linkedin.com/pub/noah-maccallum/31/949/227">Noah MacCallum</a> at the University of Waterloo for the Winter 2015 <a href=http://www.kik.com/>Kik Hackathon.</a> All code is open source and available on Github.</p>
+  </div>
+</div>
 
 
 
@@ -327,38 +281,50 @@
 
 
     <script>
-    	$(function() {
-    		$('#calendar').fullCalendar({
-    			header: {
-    				left: 'prev,next today',
-    				center: '',
-    				right: '             '
-    			},
-    			defaultView: 'agendaWeek',
-    			minTime: '10:00:00',
-    			maxTime: '15:00:00',
-    			height: 287,
-    			allDaySlot: false,
-    			//defaultDate: '2014-11-12',
-    			selectable: true,
-    			selectHelper: true,
-    			select: function(start, end) {
-    				var title = 'Available';
-    				var eventData;
-    				if (title) {
-    					eventData = {
-    						title: title,
-    						start: start,
-    						end: end
-    					};
-    					$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-    				}
-    				$('#calendar').fullCalendar('unselect');
-    			},
-    			editable: true,
-    			eventLimit: true, // allow "more" link when too many events
-    		});
-    	});
-    </script>
-  </body>
+      $(function() {
+        $('#calendar').fullCalendar({
+          header: {
+            left: 'prev,next today',
+            center: '',
+            right: '             '
+          },
+          defaultView: 'agendaWeek',
+          minTime: '10:00:00',
+          maxTime: '15:00:00',
+          height: 325,
+          allDaySlot: false,
+          //defaultDate: '2014-11-12',
+          selectable: true,
+          selectHelper: true,
+          select: function(start, end) {
+            var title = 'Available';
+            var eventData;
+            if (title) {
+              eventData = {
+                title: title,
+                start: start,
+                end: end
+              };
+              $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            }
+            $('#calendar').fullCalendar('unselect');
+
+            console.log("start.format().substr(0,19)", start.format().substr(0,19));
+            $.post('/'+user.email+'/timeslot', {
+              title: 'Available',
+              start: start.format().substr(0,19),
+              end: end.format().substr(0,19),
+            });
+          },
+          eventClick: function (calEvent, jsEvent, view) {
+            console.log("calEvent", calEvent);
+            $('#calendar').fullCalendar('removeEvents', calEvent._id);
+          },
+          timezone: 'local',
+          editable: true,
+          eventLimit: true, // allow "more" link when too many events
+        });
+});
+</script>
+</body>
 </html>

@@ -40,7 +40,7 @@
             <span ng-show="friend.name">{[{friend.name}]} <span class="grey">({[{friend.email}]})</span></span>
             <span ng-hide="friend.name">{[{friend.email}]}</span>
             <button class="remove-friend" ng-hide="friend.deleting" ng-click="removeFromList(friend)">
-              <span class="glyphicon glyphicon-remove"></span>
+              <span class="glyphicon glyphicon-remove" style="position: relative; top: 1px; left:1px"></span>
             </button>
             <span ng-show="friend.deleting" style="float:right; position:relative; top:-1px; left:6px">
               <img src="/img/redloader.gif" />
