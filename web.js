@@ -31,19 +31,7 @@ db.once('open', function callback () {
   console.log("DB connection open");
 });
 
-<<<<<<< HEAD
-// urlsList = [];
-// urlsList.push({url: '/users', callback: function })
 
-app.get('/httpdemo', function (req, res) {
-  res.send({
-    request: req,
-    response: res
-  })
-})
-
-app.get('/users', function (req, res) {
-=======
 var realm;
 if (process.env.RACK_ENV == "development") {
   realm = "http://localhost:3000/";
@@ -57,7 +45,6 @@ console.log(process.env.RACK_ENV);
 console.log(realm);
 
 app.get('/textslots', function (req, res) {
->>>>>>> origin/master
   User.find({}, function (err, users) {
     if (users.length == 0) {
       res.send ("nope");
