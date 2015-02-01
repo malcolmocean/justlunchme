@@ -144,12 +144,11 @@ passport.use(new GoogleStrategy({
 
 
 
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'mustache');
-app.set('layout', 'layout1');
+app.set('layout', 'layout_pratt');
+
 // app.enable('view cache');
 app.engine('mustache', require('hogan-express'))
 
