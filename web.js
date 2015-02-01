@@ -28,6 +28,18 @@ db.once('open', function callback () {
   console.log("DB connection open");
 });
 
+var realm;
+if (process.env.RACK_ENV == "development") {
+  realm = "http://localhost:3000/";
+} else if (process.env.RACK_ENV == "production") {
+  realm = "http://www.justlunch.me:3000/";
+} else {
+  realm = "http://www.justlunch.me:3000/";
+}
+
+console.log(process.env.RACK_ENV);
+console.log(realm);
+
 app.get('/textslots', function (req, res) {
   User.find({}, function (err, users) {
     async.each(users, function (user, callback) {
@@ -97,8 +109,8 @@ passport.deserializeUser(function(obj, done) {
 //   credentials (in this case, an OpenID identifier and profile), and invoke a
 //   callback with a user object.
 passport.use(new GoogleStrategy({
-    returnURL: 'http://localhost:3000/auth/google/return',
-    realm: 'http://localhost:3000/'
+    returnURL: realm + 'auth/google/return',
+    realm: realm,
   },
   function(identifier, profile, done) {
     // asynchronous verification, for effect...
@@ -189,7 +201,7 @@ app.get('/auth/google',
 app.get('/auth/google/return', 
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/account');
   });
 
 app.get('/logout', function(req, res){
