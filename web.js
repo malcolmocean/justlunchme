@@ -372,22 +372,24 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-function matchTimeSlots(slotA, slotB) {
+function matchTimeSlots(slotsA, slotsB) {
+  for (i=0; i<slotsA.length; i++) {
+    for (j=0; j<slotsB.length; j++) {
+      var isMatch = matchTimeSlot(slotsA[i], slotsB[j]);
+      if (isMatch) {
+        return true;
+      }
+    }
+  }
+}
 
-  if (!(slotA.startTime && slotB.startTime)) {
+function matchTimeSlot(slotA, slotB){
+  if (!(slotA.start && slotB.end)) {
     return false;
   }
-  if (slotA.startTime.substring(0, 10) != slotB.startTime.substring(0, 10)) {
+  if (slotA.start.substring(0, 10) != slotB.end.substring(0, 10)) {
     return false;
   }
-
-  bitA = time2bit(slotA.startTime, slotA.endTime);
-  bitB = time2bit(slotB.startTime, slotB.endTime);
-
-  bitMask = bitA & bitB;
-  bitString = bitMask.toString(2);
-  
-
 
   return true;
 }
@@ -398,18 +400,20 @@ function time2bit(startTime, endTime) {
   var minute = '00';
   var bitMask = 0;
   var avail = false;
-  for (i=0; i<20; i++){
+  for (i=0; i<16; i++){
     if (i%2 == 0) {
       minute = '00';
     } else {
       minute = '30';
     }
-    hour = hour +i;
-    time = hour + minute;
-
+    
+    hour = Math.floor(i/2) + 10;
+    time = hour + ":" + minute;
+    
     if (time == startTime) {
       avail = true;
     }
+
     if (time == endTime) {
       return bitMask;
     }
@@ -417,6 +421,7 @@ function time2bit(startTime, endTime) {
       bitMask += 1<<i;
     }
   }
+  return bitMask;
 } 
 
 
@@ -450,7 +455,6 @@ function matchingService(req, res) {
 
       // User.find({email: {$in: okayEmails}, lunchList.email: user.email}, function (err, docs) {
       User.find({email: {$in: okayEmails}}, function (err, friends) {
-        res.send(user);
         user.friends = friends;
         var mutual_avail_friends = [];
         for (i=0; i<friends.length; i++) {
@@ -463,6 +467,7 @@ function matchingService(req, res) {
         next();
       });
     }, function (err) {
+      var matches = {A: [], B: []};
 
       for (i=0; i<users.length; i++) {
         if (!users[i].isMatched) {
@@ -477,10 +482,16 @@ function matchingService(req, res) {
               var result  = users.filter(function(o){return o.email == friend.email;} );
               result.isMatched = true;
               result.partnerEmail = users[i].email;
+
+              matches.A.push(users[i]);
+              matches.B.push(friend);
             }
           }
         }
       }
+      res.send(matches);
+
+
     });
   });
 }
