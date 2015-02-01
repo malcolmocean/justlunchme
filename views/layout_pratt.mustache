@@ -39,10 +39,10 @@
 
 <body data-spy="scroll" data-offset="0" data-target="#navigation">
 
-  <!-- Fixed navbar -->
+  <!-- Fixed navbar --><!--
   <div id="navigation" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
-      <div class="navbar-header">
+      {{! <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -56,140 +56,131 @@
           <li><a href="#intro" class="smothscroll">Intro</a></li>
           <li><a href="#friends" class="smothScroll">Friends</a></li>
           <li><a href="#times" class="smothscroll">Scheduling</a></li>
-        </ul>
+        </ul> }}
 
         <div style="float: right; position: relative; margin-top: 10px; margin-bottom: -10px;">
-
-          <script class="pre" src="/hello.min.js"></script>
-
-          <script src="https://apis.google.com/js/client:platform.js" async defer></script>
-
-          <script class="pre">
-          var user = {};
-            hello.init( {
-              google : '791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com',
-              facebook : '871627882901365',
-            }
-            , {
-              redirect_uri:'oauth2callback',
-              scope: ["friends", "email"]
-            }
-            );
-
-            var listCallback = function () {};
-            var authCallback = function () {};
-
-            function getFriends(network, path, redirect_uri) {
-              hello.login(network, {scope: ['email', 'friends'], redirect_uri: redirect_uri}, function(auth) {
-                if (!auth || auth.error) {
-                  console.log("Signin aborted");
-                  return;
-                }
-                // Get the friends
-                // using path, me/friends or me/contacts
-                // hello( network ).api(path , {limit:10000}, function responseHandler(r) {
-                //   console.log('hello!', r);
-                // });
-
-              $('html, body').animate({
-                scrollTop: $("#friends").offset().top
-              }, 2000);
-              });
-            }
-
-            hello.on('auth.login', function (auth) {
-              console.log('login success');
-
-              // call user information, for the given network
-              hello( auth.network ).api('/me' , function (r) {
-                $.post('userJustAuthed', r, function (result) {
-                  var events = [];
-                  // for (var i in result.slots) {
-
-                  //   events.push();
-                  // }
-                  initCalendar(result && result.slots);
-                  console.log("result.slots", result.slots);
-                });
-                authCallback(r); // TODO TEST THIS
-                user.email = r.email;
-                $("#friends-box").show();
-
-                console.log('this user with email', r);
-              });
-
-              // hello( auth.network ).api( '/me/friends', {limit:100}, function (r) {
-              //   console.log('google plus friends');
-              //   console.log(r);
-              // });
-
-              hello( auth.network ).api( '/me/contacts', {limit:5000}, function (r) {
-                console.log('google contacts', r);
-                listCallback(r.data);
-              });
-            });
-
-            function initCalendar(events) {
-              $("#calendar-box").show();
-              $('#calendar').fullCalendar({
-                header: {
-                  left: 'prev,next today',
-                  center: '',
-                  right: '             '
-                },
-                // eventStartEditable: false,
-
-                // editable: false, // TODO actually support this
-                events: events || [],
-                defaultEventMinutes: 60,
-                defaultView: 'agendaWeek',
-                minTime: '10:00:00',
-                maxTime: '15:00:00',
-                height: 325,
-                allDaySlot: false,
-                //defaultDate: '2014-11-12',
-                selectable: true,
-                selectHelper: true,
-                select: function(start, end) {
-                  var title = 'Available';
-                  var eventData;
-                  if (title) {
-                    eventData = {
-                      title: title,
-                      start: start,
-                      end: end
-                    };
-                    $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
-                  }
-                  $('#calendar').fullCalendar('unselect');
-
-                  console.log("start.format().substr(0,19)", start.format().substr(0,19));
-                  $.post('/'+user.email+'/timeslot', {
-                    title: 'Available',
-                    start: start.format().substr(0,19),
-                    end: end.format().substr(0,19),
-                  });
-                },
-                eventClick: function (calEvent, jsEvent, view) {
-                  console.log("calEvent", calEvent);
-                  $('#calendar').fullCalendar('removeEvents', calEvent._id);
-                  $.post('/'+user.email+'/deletetimeslot', {
-                    start: calEvent.start.format().substr(0,19),
-                    end: calEvent.end.format().substr(0,19),
-                  });
-                },
-                timezone: 'local',
-                editable: true,
-                eventLimit: true, // allow "more" link when too many events
-              });
-            }
-
-          </script>
         {{! <div id="result"></div> }}
       </div>
-    </div><!--/.nav-collapse -->
+    </div><!--/.nav-collapse --/>
   </div>
-</div>
+</div>-->
+
+<script class="pre" src="/hello.min.js"></script>
+
+<script src="https://apis.google.com/js/client:platform.js" async defer></script>
+
+<script class="pre">
+var user = {};
+  hello.init( {
+    google : '791651266422-0rgikd8j6ls8cn70000i2vgumokps6ej.apps.googleusercontent.com',
+    facebook : '871627882901365',
+  }
+  , {
+    redirect_uri:'oauth2callback',
+    scope: ["friends", "email"]
+  }
+  );
+
+  var listCallback = function () {};
+  var authCallback = function () {};
+
+  function getFriends(network, path, redirect_uri) {
+    hello.login(network, {scope: ['email', 'friends'], redirect_uri: redirect_uri}, function(auth) {
+      if (!auth || auth.error) {
+        console.log("Signin aborted");
+        return;
+      }
+    });
+  }
+
+  hello.on('auth.login', function (auth) {
+    console.log('login success');
+
+    // call user information, for the given network
+    hello( auth.network ).api('/me' , function (r) {
+      $.post('userJustAuthed', r, function (result) {
+        initCalendar(result && result.slots);
+      });
+      user.email = r.email;
+      $("#friends-box").show();
+      $(".btn-login").hide();
+      $('html, body').animate({
+        scrollTop: $("#friends").offset().top
+      }, 2000, 'swing', function () {
+        authCallback(r); // TODO TEST THIS
+
+      });
+    });
+
+    // hello( auth.network ).api( '/me/friends', {limit:100}, function (r) {
+    //   console.log('google plus friends');
+    //   console.log(r);
+    // });
+
+    hello( auth.network ).api( '/me/contacts', {limit:5000}, function (r) {
+      console.log('google contacts', r);
+      listCallback(r.data);
+    });
+  });
+
+  function initCalendar(events) {
+    $("#calendar-box").show();
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: '',
+        right: '             '
+      },
+      eventStartEditable: false,
+      eventDurationEditable: false,
+
+      // editable: false, // TODO actually support this
+      events: events || [],
+      defaultEventMinutes: 60,
+      defaultView: 'agendaWeek',
+      minTime: '10:00:00',
+      maxTime: '15:00:00',
+      height: 325,
+      allDaySlot: false,
+      //defaultDate: '2014-11-12',
+      selectable: true,
+      selectHelper: true,
+      select: function(start, end) {
+        var title = 'Available';
+        var eventData;
+        if (title) {
+          eventData = {
+            title: title,
+            start: start,
+            end: end
+          };
+          $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+        }
+        $('#calendar').fullCalendar('unselect');
+
+        console.log("start.format().substr(0,19)", start.format().substr(0,19));
+        $.post('/'+user.email+'/timeslot', {
+          title: 'Available',
+          start: start.format().substr(0,19),
+          end: end.format().substr(0,19),
+        });
+        // TODO if goes across days, break into multiple
+      },
+      eventClick: function (calEvent, jsEvent, view) {
+        console.log("calEvent", calEvent);
+        $('#calendar').fullCalendar('removeEvents', calEvent._id);
+        $.post('/'+user.email+'/deletetimeslot', {
+          start: calEvent.start.format().substr(0,19),
+          end: calEvent.end.format().substr(0,19),
+        });
+      },
+      timezone: 'local',
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+    });
+  }
+
+</script>
 
 <div class="row">
 
@@ -200,7 +191,7 @@
       <div class="row centered">
         <div class="col-lg-12">
           <br><br><br><br>
-          <h1>Welcome To <b>JustLunchMe</b></h1>
+          <h1>{{! Welcome To  }}<b>JustLunchMe</b></h1>
           <h3>Reunite with friends. It's like real life Hangouts.</h3>
           <br>
         </div>
@@ -210,7 +201,7 @@
           <br><br>
         </div>
         <div class="col-lg-12">
-          <button type="button" class="btn btn-login btn-large" onclick="getFriends('google', 'me/contacts', 'oauth2callback')">Login</button>
+          <button type="button" class="btn btn-login btn-large" onclick="getFriends('google', 'me/contacts', 'oauth2callback')">{{! Login }}Lunch me</button>
         </div>
 
 
