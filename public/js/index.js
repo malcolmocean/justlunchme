@@ -18,7 +18,7 @@ app.filter('searchfilter', [function () {
     var filtered = [];
     angular.forEach(items, function(item, ix) {
       if (item && item.searchString.indexOf(search.text) >= 0 ) {
-        // item.ix = ix;
+        item.ix = ix;
         filtered.push(item);
       }
     });
@@ -37,7 +37,7 @@ app.filter('searchfilter', [function () {
 
 app.controller('UserPickerCtrl', function ($scope, $http) {
   $scope.sendAddToServer = function (who, callback) {
-    $http.post('/add', who).success(callback);
+    $http.post('/'+user.email+'/add', who).success(callback);
   }
   $scope.lunchList = [];
   $scope.addByClick = function (friend) {
@@ -55,6 +55,7 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
   $scope.searchKeypress = function ($event) {
     if ($event.charCode == KEYS.ENTER) {
       if ($scope.search.singleton) {
+        $scope.search.singleton.ix = $scope.lunchList.length;
         $scope.lunchList.push($scope.search.singleton);
         for (var i=0; i < $scope.friends.length; i++) {
           if ($scope.friends[i].email == $scope.search.singleton.email) {
@@ -64,10 +65,15 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
         }
         $scope.search = {};
       } else if ($scope.search.validemail) {
-        $scope.lunchList.push({email: $scope.search.text});
-        // TODO send email, have ajax track status of that invite
+        $scope.lunchList.push({email: $scope.search.text, ix: $scope.lunchList.length});
+        // TODO send email
         $scope.search = {};
+      } else {
+        return; // so you don't send add // TODO fix hack
       }
+      $scope.sendAddToServer($scope.lunchList[$scope.lunchList.length-1], function (result) {
+        console.log("result", result);
+      })
     }
   }
 
@@ -77,74 +83,45 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
     $scope.friends = [];
     angular.forEach(list, function(item, ix) {
       if (item.email && !/@fut.io/.test(item.email) && !lunchMap[item.email] &&
-        !/@(reply|groups).facebook.com/.test(item.email)) {
-        item.searchString = item.name.toLowerCase() + ' ' + item.email.toLowerCase()
-        item.ix = $scope.friends.length;
-        $scope.friends.push(item);
+        // !/@(reply|groups).facebook.com/.test(item.email) &&
+        // !/@\w*.?craigslist.org/.test(item.email) &&
+        // !/^support@/.test(item.email) &&
+        /@gmail.com/.test(item.email)
+        ) {
+        var friend = {
+          email: item.email,
+          name: item.name,
+          searchString: item.name.toLowerCase() + ' ' + item.email.toLowerCase(),
+          ix: $scope.friends.length
+        }
+        $scope.friends.push(friend);
       }
     });
-    // $scope.friends = list;
-    console.log("$scope.friends[1]", $scope.friends[1]);
     $scope.$apply();
   }
 
-  var user = {
-    email: "malcolm.m.ocean@gmail.com"
+  authCallback = function (user) {
+    $http.get('/'+user.email+'/lunchList').success(function (list) {
+      if ($scope.lunchList && $scope.lunchList.length) {
+        $scope.lunchList = $scope.lunchList.concat(list);
+      } else {
+        $scope.lunchList = list;
+      }
+      for (var i=0; i<$scope.lunchList.length; i++) {
+        lunchMap[$scope.lunchList[i].email] = true;
+      }
+    });
   }
 
-  $http.get('/'+user.email+'/lunchList').success(function (list) {
-    if ($scope.lunchList && $scope.lunchList.length) {
-      $scope.lunchList = $scope.lunchList.concat(list);
-    } else {
-      $scope.lunchList = list;
-    }
-    for (var i=0; i<$scope.lunchList.length; i++) {
-      lunchMap[$scope.lunchList[i].email] = true;
-    }
-  });
+  $scope.removeFromList = function (person) {
+    person.deleting = true; // TODO use for spinner
+    $http.delete('/'+user.email+'/lunchList/'+person.email).success(function () {
+      for (var i = 0; i < $scope.lunchList.length; i++) {
+        if ($scope.lunchList[i].email === person.email) {
+          $scope.lunchList.splice(i, 1);
+          break;
+        }
+      }
+    });
+  }
 });
-
-setTimeout(function () {
-  listCallback([
-    {
-      name: "Noah MacCallum",
-      email: "noahmacca@gmail.com",
-    },
-    {
-      name: "Adam Euerby",
-      email: "aeuerby@gmail.com",
-    },
-    {
-      name: "Alisa McClurg",
-      email: "amcclurg@outlook.com",
-    },
-    {
-      name: "Amanda Comeau",
-      email: "amanda.comeau9@gmail.com",
-    },
-    {
-      name: "Benjamin Carr",
-      email: "benjamin.f.carr@gmail.com",
-    },
-    {
-      name: "Charlotte Clarke",
-      email: "accredo.et.amo@gmail.com",
-    },
-    {
-      name: "Connor Turland",
-      email: "connorturland@gmail.com",
-    },
-    {
-      name: "Emma Dines",
-      email: "emmadines@gmail.com",
-    },
-    {
-      name: "Jean Robertson",
-      email: "jean@viewpointonchange.com",
-    },
-    {
-      name: "Tanya Williams",
-      email: "friendsofthefloor@gmail.com",
-    },
-  ]);
-}, 20);

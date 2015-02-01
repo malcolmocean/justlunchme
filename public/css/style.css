@@ -1,12 +1,30 @@
 .adder-box {
-  border-right: 3px solid #cba;
+  border-right: 3px solid #B36000;
+}
+
+.btn-login {
+  font-size: 40px;
+  font-family: 'Raleway';
+  font-weight: 900;
+  padding: 10px 40px;
+  background: #DC4C4C;
+  border: 2px solid white;
+  color: white;
+}
+
+.subtitle {
+  font-family: 'Raleway';
+  font-size: 16px;
+  color: rgba(255,255,255,0.7);
+  display: inline-block;
+  margin: -10px 0 8px;
 }
 
 .label-search {
   margin: 5px 0;
   position: relative;
   left: 18px;
-  color: #FFAD90;
+  color: #733E00;
 }
 
 .form-group-search {
@@ -23,6 +41,7 @@
   max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
+  border-radius: 4px;
 }
 
 .friend-list li, .lunch-list li {
@@ -33,7 +52,7 @@
   background: white;
 }
 
-.friend-list li a, .lunch-list li {
+.friend-list li a, .lunch-list li a {
   padding: 6px 12px;
   display: block;
   text-decoration: none;
@@ -49,6 +68,25 @@
   background: #cce5ff;
 }
 
+.lunch-list .remove-friend {
+  color: #c03f29;
+  float: right;
+  display: none;
+  background: none;
+  border: 0;
+  margin-right: -6px;
+  border-radius: 10px;
+}
+
+.lunch-list a:hover .remove-friend {
+  display: inline-block;
+}
+
+.lunch-list .remove-friend:hover {
+  color: white;
+  background-color: #c03f29;
+}
+
 .hasapp {
   background: #ddffe5;
 }
@@ -61,3 +99,9 @@
     max-width: 900px;
     margin: 0 auto;
   }
+
+.grey {
+  color: #aaa;
+}
+
+

@@ -31,37 +31,8 @@ db.once('open', function callback () {
   console.log("DB connection open");
 });
 
-
-app.get('/textslots', function (req, res) {
-  User.find({}, function (err, users) {
-    if (users.length == 0) {
-      res.send ("nope");
-    } else {
-      res.send (users);
-    }
-  });
-});
-
-function checkWhosLoggedIn (req, res, next) {
-  // code here that handles auth
-  req.session.loggedinuser = "noah.maccalum";
-  next();
-}
-
-app.post('/updateMyTopFriendsList', checkWhosLoggedIn, function (req, res) {
-  User.findOne({fbusername : req.session.loggedinuser}, function (err, user) {
-    user.friendList = req.body.friendList;
-
-  });
-  res.send("we did it");
-});
-
-app.get('/userme', function (req, res) {
-  res.send("hi")
-});
-
-app.get('/emailuser/:fbusername', function (req, res) {
-  User.findOne({fbusername: req.params.fbusername}, function (err, user) {
+app.get('/emailuser/:email', function (req, res) {
+  User.findOne({email: req.params.email}, function (err, user) {
     mg.checkAndSendHtml({
       from: "JustLunchMe Test <test@justlunch.me>",
       to: user.email,
@@ -76,7 +47,10 @@ app.get('/emailuser/:fbusername', function (req, res) {
   });
 });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> af48f20dd7619b7ace5f2eb1bf8997d146702b88
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
 //   serialize users into and deserialize users out of the session.  Typically,
@@ -91,7 +65,6 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
-
 
 // Use the GooglePlusStrategy within Passport.
 //   Strategies in passport require a `validate` function, which accept
@@ -146,12 +119,28 @@ app.get('/', function(req, res, next) {
   });
 });
 
-function mGetUser (req, res, next) {
-  User.findOne({fbusername: 'malcolm.mcc'}, function (err, user) {
-    req.user = user;
-    next();
+app.post('/userJustAuthed', function (req, res) {
+  User.findOne({email: req.body.email}, function (err, existingUser) {
+    if (err) {
+      res.status(500).send(err);
+    } else if (existingUser) {
+      existingUser.name = req.body.name || existingUser.name;
+      existingUser.lastauthstamp = Date.now();
+      existingUser.save(function (errs) {
+        res.send({result: "existing"});
+      })
+    } else {
+      var user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        lastauthstamp: Date.now()
+      });
+      user.save(function (errs) {
+        res.send({result: "new user"});
+      });
+    }
   });
-}
+});
 
 app.get('/:email/notifications.json', /* PERM */ function (req, res) {
   User.find({friendsByEmail: req.params.email}, "name email", function (err, users) {
@@ -171,31 +160,50 @@ app.get('/:email/lunchList', function (req, res) {
   });
 });
 
-app.post('/add', mGetUser, function (req, res) {
-  var mt = req.body.email.match(/^[^<]*<?([^>]*)>?.*$/);
-  var rawEmail = mt[1] || mt[0];
-  User.findOne({email: rawEmail}, function (err, alreadyUser) {
-    if (err) {
-      res.send(500, err);
-    } else {
-      if (alreadyUser) {
-        // res.send(alreadyUser)
-      } else {
-        // res.send("inviting by email");
-      }
-      req.user.lunchList.push({
-        name: req.body.name,
-        email: req.body.email
-      });
-      req.user.save(function (err) {
-        res.status(err ? 500 : 200).send(err || "");
-        console.log("err", err);
-      });
-    }
+app.delete('/:email/lunchList/:otherEmail', function (req, res) {
+  User.findOneAndUpdate({email: req.params.email}, {$pull: {lunchList: {email: req.params.otherEmail}}}, function (err, data) {
+    res.status(err ? 500 : 204).send();
   });
-  // var user = req.user
-  // console.log("req.user", req.user);
-  // res.send(req.user);
+});
+
+app.post('/:email/add', function (req, res) {
+  User.findOne({email: req.params.email}, function (err, user) {
+    var mt = req.body.email.match(/^[^<]*<?([^>]*)>?.*$/);
+    var rawEmail = mt[1] || mt[0];
+    User.findOne({email: rawEmail}, function (erra, alreadyUser) {
+      if (erra) {
+        res.send(500, err);
+      } else {
+        if (alreadyUser) {
+          // res.send(alreadyUser)
+        } else {
+          // res.send("inviting by email");
+        }
+        // user.lunchList = [];
+        // user.slots = [];
+        user.lunchList.push({
+          name: req.body.name,
+          email: req.body.email
+        });
+        user.save(function (err) {
+          res.status(err ? 500 : 200).send(err || "");
+          console.log("err", err);
+        });
+      }
+    });
+  });
+});
+
+app.post('/:email/timeslot', function (req, res) {
+  User.findOne({email: req.params.email}, function (err, user) {
+    console.log("req.body", req.body);
+    console.log("========================================");
+    user.slots.push(req.body);
+    user.save(function (err) {
+      res.status(err ? 500 : 200).send(err || "");
+      console.log("err", err);
+    });
+  });
 });
 
 app.get('/account', ensureAuthenticated, function(req, res) {
@@ -206,7 +214,6 @@ app.get('/account', ensureAuthenticated, function(req, res) {
 app.get('/login', function(req, res){
   res.render('login', { user: req.user });
 });
-
 
 //app.get('/auth/google', passport.authenticate('google',{scope: 'https://www.googleapis.com/auth/plus.me https://www.google.com/m8/feeds https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'}));
 
