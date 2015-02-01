@@ -8,12 +8,12 @@ var KEYS = {
   ENTER: 13
 }
 
-
 app.filter('searchfilter', [function () {
   return function(items, search) {
     if (!search || !search.text) {
       return items;
     }
+    items && console.log("items.length", items.length);
     search.text = search.text.toLowerCase();
     var filtered = [];
     angular.forEach(items, function(item, ix) {
@@ -43,6 +43,9 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
   $scope.addByClick = function (friend) {
     if (friend && friend.ix > -1) {
       $scope.lunchList.push($scope.friends.splice(friend.ix, 1)[0]);
+      angular.forEach($scope.friends, function(item, ix) {
+        item.ix = ix;
+      });
     } else if ($scope.search.validemail) {
       $scope.lunchList.push({email: $scope.search.text})
       $scope.search = {};
@@ -63,6 +66,9 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
             break;
           }
         }
+        angular.forEach($scope.friends, function(item, ix) {
+          item.ix = ix;
+        });
         $scope.search = {};
       } else if ($scope.search.validemail) {
         $scope.lunchList.push({email: $scope.search.text, ix: $scope.lunchList.length});
@@ -78,6 +84,7 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
   }
 
   var lunchMap = {};
+  var fullMap = {};
 
   listCallback = function (list) {
     $scope.friends = [];
@@ -88,13 +95,21 @@ app.controller('UserPickerCtrl', function ($scope, $http) {
         // !/^support@/.test(item.email) &&
         /@gmail.com/.test(item.email)
         ) {
-        var friend = {
-          email: item.email,
-          name: item.name,
-          searchString: item.name.toLowerCase() + ' ' + item.email.toLowerCase(),
-          ix: $scope.friends.length
+        if (fullMap[item.email] > -1) {
+          if (!$scope.friends[fullMap[item.email]].name) {
+            $scope.friends[fullMap[item.email]].name = item.name;
+            $scope.friends[fullMap[item.email]].searchString = item.name.toLowerCase() + ' ' + item.email.toLowerCase();
+          }
+        } else {
+          var friend = {
+            email: item.email,
+            name: item.name,
+            searchString: item.name.toLowerCase() + ' ' + item.email.toLowerCase(),
+            ix: $scope.friends.length
+          }
+          fullMap[item.email] = friend.ix;
+          $scope.friends.push(friend);
         }
-        $scope.friends.push(friend);
       }
     });
     $scope.$apply();

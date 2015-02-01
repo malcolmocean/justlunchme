@@ -145,7 +145,7 @@ app.get('/:email/notifications.json', /* PERM */ function (req, res) {
   });
 });
 
-app.get('/:email/model', function (req, res) {
+process.env.RACK_ENV === "development" && app.get('/:email/model', function (req, res) {
   User.findOne({email: req.params.email}, function (err, user) {
     res.send(err || user);
   });
@@ -153,7 +153,7 @@ app.get('/:email/model', function (req, res) {
 
 app.get('/:email/lunchList', function (req, res) {
   User.findOne({email: req.params.email}, "lunchList", function (err, user) {
-    res.send(err || user.lunchList);
+    res.send(err || (user ? user.lunchList : []));
   });
 });
 
@@ -194,6 +194,18 @@ app.post('/:email/add', function (req, res) {
 app.get('/:email/timeslots', function (req, res) {
   User.findOne({email: req.params.email}, function (err, user) {
     res.send(user.slots);
+  });
+});
+
+app.post('/:email/allTimeslots', function (req, res) {
+  User.findOne({email: req.params.email}, function (err, user) {
+    console.log("req.body", req.body);
+    console.log("========================================");
+    user.slots = req.body;
+    user.save(function (err) {
+      res.status(err ? 500 : 200).send(err || "");
+      console.log("err", err);
+    });
   });
 });
 
@@ -425,8 +437,6 @@ function time2bit(startTime, endTime) {
 } 
 
 
-
-
 function matchingService(req, res) {
 
   // Need a MongoDB query similar to the following SQL Query:
@@ -451,7 +461,7 @@ function matchingService(req, res) {
       }
 
       user.isMatched = false;
-      
+
 
       // User.find({email: {$in: okayEmails}, lunchList.email: user.email}, function (err, docs) {
       User.find({email: {$in: okayEmails}}, function (err, friends) {
@@ -463,7 +473,7 @@ function matchingService(req, res) {
           }
         }
         user.mutual_avail_friends = mutual_avail_friends;
-        
+
         next();
       });
     }, function (err) {
