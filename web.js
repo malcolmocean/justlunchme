@@ -190,6 +190,12 @@ app.post('/:email/add', function (req, res) {
   });
 });
 
+app.get('/:email/timeslots', function (req, res) {
+  User.findOne({email: req.params.email}, function (err, user) {
+    res.send(slots);
+  });
+});
+
 app.post('/:email/timeslot', function (req, res) {
   User.findOne({email: req.params.email}, function (err, user) {
     console.log("req.body", req.body);
@@ -200,6 +206,21 @@ app.post('/:email/timeslot', function (req, res) {
       console.log("err", err);
     });
   });
+});
+
+app.post('/:email/deletetimeslot', function (req, res) {
+  User.findOneAndUpdate({email: req.params.email}, {$pull: {slots: {start: req.body.start, end: req.body.end}}}, function (err, data) {
+    res.status(err ? 500 : 204).send();
+  });
+  // User.findOne({email: req.params.email}, function (err, user) {
+  //   console.log("req.body", req.body);
+  //   console.log("========================================");
+  //   user.slots.push(req.body);
+  //   user.save(function (err) {
+  //     res.status(err ? 500 : 200).send(err || "");
+  //     console.log("err", err);
+  //   });
+  // });
 });
 
 app.get('/account', ensureAuthenticated, function(req, res) {
